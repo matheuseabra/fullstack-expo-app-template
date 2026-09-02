@@ -5,7 +5,7 @@ This repository is a Bun/Turborepo full-stack template. Keep changes small, loca
 ## Read first
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for runtime boundaries and request flows.
-- [`DESIGN.md`](DESIGN.md) for visual decisions and UI vocabulary.
+- [`docs/DESIGN.md`](docs/DESIGN.md) for visual decisions and UI vocabulary.
 - The relevant skill under [`.agent/skills/`](.agent/skills/) before changing a stack area.
 
 ## Stack map

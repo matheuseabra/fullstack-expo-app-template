@@ -105,7 +105,7 @@ For a production-like server, the `apps/server/Dockerfile` builds the server bun
 | Concern | Change here | Avoid changing |
 | --- | --- | --- |
 | Screen and route UI | `apps/web/src/routes`, `apps/mobile/app` | API or database internals |
-| Shared visual primitives | `packages/ui` and `DESIGN.md` | Duplicating primitives in each app |
+| Shared visual primitives | `packages/ui` and `docs/DESIGN.md` | Duplicating primitives in each app |
 | Client/server contract | `packages/api/src/routers` | Ad hoc fetch shapes in clients |
 | Authentication | `packages/auth`, auth clients | Reading session data directly from the database |
 | Persistence | `packages/db/src/schema` and migrations | Embedding SQL in route components |

@@ -13,7 +13,7 @@ Use this skill for changes under `apps/web`, including routes, loaders, auth gua
 - The protected route boundary is `apps/web/src/routes/_auth/route.tsx`; keep auth checks at the route boundary.
 - Use `apps/web/src/utils/orpc.ts` for typed API calls and `apps/web/src/lib/auth-client.ts` for Better Auth.
 - `VITE_SERVER_URL` is public configuration loaded from `apps/web/.env`.
-- Prefer `packages/ui` primitives and `DESIGN.md` tokens over local component duplication.
+- Prefer `packages/ui` primitives and `docs/DESIGN.md` tokens over local component duplication.
 
 ## Verification
 

@@ -12,7 +12,7 @@ Use this skill for changes under `apps/mobile` or when a task involves Expo, Rea
 - Screens and layouts live under `apps/mobile/app` and follow Expo Router file-based routing.
 - Native API calls use `apps/mobile/utils/orpc.ts`; Better Auth uses `apps/mobile/lib/auth-client.ts` with SecureStore.
 - `EXPO_PUBLIC_SERVER_URL` is public client configuration and belongs in `apps/mobile/.env`.
-- Reuse existing Uniwind utilities and shared primitives where possible. Follow `DESIGN.md` for new visual work.
+- Reuse existing Uniwind utilities and shared primitives where possible. Follow `docs/DESIGN.md` for new visual work.
 - Treat `ios/`, `android/`, `.expo/`, `expo-env.d.ts`, and generated Uniwind types as generated or local output.
 
 ## Commands

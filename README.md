@@ -134,7 +134,9 @@ Docker Compose reads `apps/server/.env`. Use a hosted database or provide a data
 │       ├── index.html
 │       ├── package.json
 │       └── vite.config.ts
-├── docs/ARCHITECTURE.md
+├── docs/
+│   ├── ARCHITECTURE.md
+│   └── DESIGN.md
 ├── packages/
 │   ├── api/src/              # oRPC context and routers
 │   ├── auth/src/             # Better Auth configuration
@@ -143,7 +145,6 @@ Docker Compose reads `apps/server/.env`. Use a hosted database or provide a data
 │   ├── env/src/              # Server, web, and native env validation
 │   └── ui/src/               # Shared UI components and styles
 ├── AGENTS.md
-├── DESIGN.md
 ├── LICENSE
 ├── README.md
 ├── SECURITY.md
@@ -154,7 +155,7 @@ Docker Compose reads `apps/server/.env`. Use a hosted database or provide a data
 └── turbo.json
 ```
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for dependency and request-flow diagrams, [`DESIGN.md`](DESIGN.md) for the visual system, and [`AGENTS.md`](AGENTS.md) for repository operating instructions.
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for dependency and request-flow diagrams, [`docs/DESIGN.md`](docs/DESIGN.md) for the visual system, and [`AGENTS.md`](AGENTS.md) for repository operating instructions.
 
 ## Quality checks
 
