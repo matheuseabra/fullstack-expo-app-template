@@ -1,0 +1,37 @@
+// Better-T-Stack project metadata
+//
+// Keep this file to use the `add` command.
+// Add addons: bunx create-better-t-stack@latest add
+//
+// Docs: https://better-t-stack.dev/docs
+// Stack Builder: https://better-t-stack.dev/new
+
+{
+  "$schema": "https://r2.better-t-stack.dev/schema.json",
+  "version": "3.42.1",
+  "createdAt": "2026-09-01T14:04:40.116Z",
+  "reproducibleCommand": "bun create better-t-stack@latest fullstack-expo-app-template --frontend tanstack-router native-uniwind --backend hono --runtime bun --database sqlite --orm drizzle --api orpc --auth better-auth --payments none --addons mcp skills turborepo --examples todo --db-setup turso --web-deploy none --server-deploy docker --git --package-manager bun --install",
+  "database": "sqlite",
+  "orm": "drizzle",
+  "backend": "hono",
+  "runtime": "bun",
+  "frontend": [
+    "tanstack-router",
+    "native-uniwind"
+  ],
+  "addons": [
+    "mcp",
+    "skills",
+    "turborepo"
+  ],
+  "examples": [
+    "todo"
+  ],
+  "auth": "better-auth",
+  "payments": "none",
+  "packageManager": "bun",
+  "dbSetup": "turso",
+  "api": "orpc",
+  "webDeploy": "none",
+  "serverDeploy": "docker"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@fullstack-expo-app-template/auth",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "type": "module",
+  "scripts": {},
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "@fullstack-expo-app-template/config": "workspace:*"
+  },
+  "dependencies": {
+    "dotenv": "catalog:",
+    "zod": "catalog:",
+    "@fullstack-expo-app-template/env": "workspace:*",
+    "@fullstack-expo-app-template/db": "workspace:*",
+    "better-auth": "catalog:",
+    "@better-auth/expo": "catalog:"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@fullstack-expo-app-template/api",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "type": "module",
+  "scripts": {},
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "@fullstack-expo-app-template/config": "workspace:*",
+    "hono": "catalog:"
+  },
+  "dependencies": {
+    "dotenv": "catalog:",
+    "zod": "catalog:",
+    "@fullstack-expo-app-template/env": "workspace:*",
+    "@fullstack-expo-app-template/auth": "workspace:*",
+    "@fullstack-expo-app-template/db": "workspace:*",
+    "@orpc/server": "catalog:",
+    "@orpc/client": "catalog:",
+    "@orpc/openapi": "catalog:",
+    "@orpc/zod": "catalog:",
+    "drizzle-orm": "catalog:"
+  }
+}

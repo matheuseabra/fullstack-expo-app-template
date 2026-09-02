@@ -1,0 +1,33 @@
+{
+  "name": "@fullstack-expo-app-template/db",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "db:local": "turso dev --db-file local.db",
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:deploy": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:migrate": "drizzle-kit migrate"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "@fullstack-expo-app-template/config": "workspace:*",
+    "drizzle-kit": "^0.31.10"
+  },
+  "dependencies": {
+    "dotenv": "catalog:",
+    "zod": "catalog:",
+    "@fullstack-expo-app-template/env": "workspace:*",
+    "drizzle-orm": "catalog:",
+    "@libsql/client": "0.17.4",
+    "libsql": "catalog:"
+  }
+}
