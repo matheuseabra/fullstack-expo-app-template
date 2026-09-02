@@ -15,23 +15,10 @@
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/react-router": "^1.170.18",
     "lucide-react": "catalog:",
-    "next-themes": "catalog:",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "sonner": "catalog:",
-    "dotenv": "catalog:",
-    "zod": "catalog:",
-    "@fullstack-expo-app-template/env": "workspace:*",
-    "@fullstack-expo-app-template/api": "workspace:*",
-    "@orpc/tanstack-query": "catalog:",
-    "@orpc/client": "catalog:",
-    "@orpc/server": "catalog:",
-    "@tanstack/react-query": "catalog:",
-    "better-auth": "catalog:",
-    "@tanstack/react-form": "catalog:"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@tanstack/react-router-devtools": "^1.167.0",
     "@tanstack/router-plugin": "^1.168.23",
     "@types/node": "catalog:",
     "@types/react": "^19.2.17",
@@ -41,7 +28,6 @@
     "tailwindcss": "catalog:",
     "vite": "^8.1.5",
     "typescript": "^6.0.3",
-    "@fullstack-expo-app-template/config": "workspace:*",
-    "@tanstack/react-query-devtools": "^5.101.4"
+    "@fullstack-expo-app-template/config": "workspace:*"
   }
 }

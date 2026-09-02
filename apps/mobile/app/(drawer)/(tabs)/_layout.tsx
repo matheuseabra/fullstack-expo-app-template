@@ -1,43 +1,41 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { useThemeColor } from "heroui-native";
+import { DAYMARK_COLORS, DAYMARK_TYPE } from "@/constants/daymark";
 
 export default function TabLayout() {
-	const themeColorForeground = useThemeColor("foreground");
-	const themeColorBackground = useThemeColor("background");
-
 	return (
 		<Tabs
 			screenOptions={{
-				headerShown: false,
-				headerStyle: {
-					backgroundColor: themeColorBackground,
-				},
-				headerTintColor: themeColorForeground,
-				headerTitleStyle: {
-					color: themeColorForeground,
-					fontWeight: "600",
-				},
+				headerShown: true,
+				headerStyle: { backgroundColor: DAYMARK_COLORS.surface },
+				headerTintColor: DAYMARK_COLORS.text,
+				headerTitleStyle: { ...DAYMARK_TYPE.sectionTitle, color: DAYMARK_COLORS.text },
 				tabBarStyle: {
-					backgroundColor: themeColorBackground,
+					backgroundColor: DAYMARK_COLORS.surface,
+					borderTopColor: DAYMARK_COLORS.border,
+					height: 76,
+					paddingTop: 8,
 				},
+				tabBarActiveTintColor: DAYMARK_COLORS.black,
+				tabBarInactiveTintColor: DAYMARK_COLORS.textMuted,
+				tabBarLabelStyle: { ...DAYMARK_TYPE.small, fontSize: 11 },
 			}}
 		>
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: "Home",
+					title: "Week",
 					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="home" size={size} color={color} />
+						<Ionicons name="calendar-outline" size={size} color={color} />
 					),
 				}}
 			/>
 			<Tabs.Screen
 				name="two"
 				options={{
-					title: "Explore",
+					title: "Settings",
 					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="compass" size={size} color={color} />
+						<Ionicons name="settings-outline" size={size} color={color} />
 					),
 				}}
 			/>
