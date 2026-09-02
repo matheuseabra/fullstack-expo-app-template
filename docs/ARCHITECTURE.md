@@ -5,6 +5,7 @@
 The repository is a workspace of two clients, one HTTP server, and shared packages. Both clients call the same typed oRPC procedures and Better Auth endpoints; only the server-side packages talk to the database.
 
 ```mermaid
+%%{init: {"flowchart": {"curve": "linear"}, "themeVariables": {"lineColor": "#888888"}}}%%
 flowchart LR
     Web[apps/web\nVite + React] -->|RPC and auth HTTP| Server[apps/server\nBun + Hono]
     Mobile[apps/mobile\nExpo Router] -->|RPC and auth HTTP| Server
@@ -18,11 +19,13 @@ flowchart LR
     Env[packages/env\nserver / web / native validation] --> Web
     Env --> Mobile
     Env --> Server
+    linkStyle default stroke-width:1px,fill:none
 ```
 
 ## Workspace dependency direction
 
 ```mermaid
+%%{init: {"flowchart": {"curve": "linear"}, "themeVariables": {"lineColor": "#888888"}}}%%
 flowchart TD
     Root[Root workspace\nBun + Turborepo]
     Root --> Web[apps/web]
@@ -41,6 +44,7 @@ flowchart TD
     Auth --> DB
     Auth --> Env
     DB --> Env
+    linkStyle default stroke-width:1px,fill:none
 ```
 
 The dependency direction is intentionally simple: clients depend on typed contracts, the server composes the HTTP boundary, and persistence stays behind `packages/db`.
@@ -89,6 +93,7 @@ The server loads `apps/server/.env` through `dotenv`. Vite loads `apps/web/.env`
 ## Development topology
 
 ```mermaid
+%%{init: {"flowchart": {"curve": "linear"}, "themeVariables": {"lineColor": "#888888"}}}%%
 flowchart LR
     Dev[Developer shell] --> Turbo[bun run dev]
     Turbo --> Web[Web :3001]
@@ -96,6 +101,7 @@ flowchart LR
     Turbo --> Metro[Expo Metro :8081]
     Metro --> Sim[iOS Simulator or Expo Go]
     API --> Local[(apps/server/local.db)]
+    linkStyle default stroke-width:1px,fill:none
 ```
 
 For a production-like server, the `apps/server/Dockerfile` builds the server bundle and Docker Compose supplies runtime environment variables. A hosted Turso/libSQL database should be used for deployed workloads.
