@@ -1,18 +1,11 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Container } from "@/components/container";
 import { DAYMARK_COLORS, DAYMARK_RADII, DAYMARK_SPACING, DAYMARK_TYPE } from "@/constants/daymark";
-
-type Task = { id: string; title: string; completed: boolean };
-
-const INITIAL_TASKS: Task[] = [
-  { id: "draft", title: "Write the first draft", completed: true },
-  { id: "break", title: "Take a proper break", completed: false },
-  { id: "note", title: "Send the project note", completed: false },
-];
+import { AppBottomNav, MenuButton } from "@/components/daymark-navigation";
+import { useTodos } from "@/hooks/use-todos";
 
 function BrandRow() {
   return (
@@ -24,7 +17,7 @@ function BrandRow() {
         </View>
         <Text style={styles.brandName}>daymark</Text>
       </View>
-      <Ionicons name="menu-outline" size={25} color={DAYMARK_COLORS.text} accessibilityLabel="Open menu" />
+      <MenuButton />
     </View>
   );
 }
@@ -45,75 +38,78 @@ function ProgressCard({ completed, total }: { completed: number; total: number }
   );
 }
 
-function TaskRow({ task, onToggle }: { task: Task; onToggle: () => void }) {
+function TaskRow({ task, onToggle, disabled }: { task: { text: string; completed: boolean }; onToggle: () => void; disabled: boolean }) {
   return (
-    <Pressable style={styles.taskRow} onPress={onToggle} accessibilityRole="checkbox" accessibilityState={{ checked: task.completed }}>
+    <Pressable disabled={disabled} style={styles.taskRow} onPress={onToggle} accessibilityRole="checkbox" accessibilityState={{ checked: task.completed }}>
       <View style={[styles.taskCheck, task.completed && styles.taskCheckDone]}>
         {task.completed ? <Ionicons name="checkmark" size={15} color={DAYMARK_COLORS.white} /> : null}
       </View>
-      <Text style={[styles.taskText, task.completed && styles.taskTextDone]}>{task.title}</Text>
+      <Text style={[styles.taskText, task.completed && styles.taskTextDone]}>{task.text}</Text>
     </Pressable>
   );
 }
 
-function BottomNav() {
-  const router = useRouter();
-  const items = useMemo(() => [
-    { label: "Today", icon: "checkbox-outline" as const },
-    { label: "Week", icon: "calendar-outline" as const, onPress: () => router.push("/(drawer)/(tabs)") },
-    { label: "Tasks", icon: "list-outline" as const, onPress: () => router.push("/(drawer)/todos") },
-    { label: "Settings", icon: "settings-outline" as const, onPress: () => router.push("/(drawer)/(tabs)/two") },
-  ], [router]);
-
-  return (
-    <View style={styles.bottomNav}>
-      {items.map((item, index) => (
-        <Pressable key={item.label} style={styles.navItem} onPress={item.onPress} accessibilityRole="button">
-          <Ionicons name={item.icon} size={21} color={index === 0 ? DAYMARK_COLORS.black : DAYMARK_COLORS.textMuted} />
-          <Text style={[styles.navLabel, index === 0 && styles.navLabelActive]}>{item.label}</Text>
-        </Pressable>
-      ))}
-    </View>
-  );
+function formatToday(date: Date) {
+  return date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
 }
 
 export default function Home() {
   const insets = useSafeAreaInsets();
-  const [tasks, setTasks] = useState(INITIAL_TASKS);
-  const completedCount = tasks.filter((task) => task.completed).length;
+  const [isAdding, setIsAdding] = useState(false);
+  const [newTaskText, setNewTaskText] = useState("");
+  const { taskList, isLoading, isError, refetch, isPending, isMutationError, createTodo, toggleTodo } = useTodos();
+  const completedCount = taskList.filter((task) => task.completed).length;
+  const today = new Date();
 
-  const toggleTask = (id: string) => {
-    setTasks((currentTasks) => currentTasks.map((task) => (
-      task.id === id ? { ...task, completed: !task.completed } : task
-    )));
-  };
-
-  const addTask = () => {
-    setTasks((currentTasks) => [
-      ...currentTasks,
-      { id: `task-${currentTasks.length}`, title: "Plan tomorrow's first step", completed: false },
-    ]);
+  const handleAddTask = () => {
+    const text = newTaskText.trim();
+    if (!text || isPending) return;
+    void createTodo(text).then(() => {
+        setNewTaskText("");
+        setIsAdding(false);
+      }).catch(() => undefined);
   };
 
   return (
     <Container isScrollable={false} style={styles.container}>
-      <ScrollView contentContainerStyle={[styles.content, { paddingTop: insets.top + DAYMARK_SPACING.lg }]} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={[styles.content, { paddingTop: insets.top + DAYMARK_SPACING.lg }]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <BrandRow />
         <View style={styles.headingBlock}>
           <Text style={styles.pageTitle}>Today</Text>
-          <Text style={styles.dateLine}>Tuesday, 15 October</Text>
-          <Text style={styles.greeting}>Good morning, Matheus.</Text>
+          <Text style={styles.dateLine}>{formatToday(today)}</Text>
+          <Text style={styles.greeting}>Good morning.</Text>
         </View>
-        <ProgressCard completed={completedCount} total={tasks.length} />
-        <View style={styles.taskList}>
-          {tasks.map((task) => <TaskRow key={task.id} task={task} onToggle={() => toggleTask(task.id)} />)}
-        </View>
-        <Pressable style={styles.addButton} onPress={addTask} accessibilityRole="button">
-          <Ionicons name="add" size={23} color={DAYMARK_COLORS.white} />
-          <Text style={styles.addButtonText}>Add a task</Text>
-        </Pressable>
+        <ProgressCard completed={completedCount} total={taskList.length} />
+        {isLoading ? (
+          <View style={styles.statusState}><Text style={styles.statusText}>Loading your tasks…</Text></View>
+        ) : isError ? (
+          <View style={styles.statusState}>
+            <Text style={styles.statusText}>We couldn’t load your tasks.</Text>
+            <Pressable onPress={() => refetch()} accessibilityRole="button"><Text style={styles.retryText}>Try again</Text></Pressable>
+          </View>
+        ) : taskList.length === 0 ? (
+          <View style={styles.statusState}><Text style={styles.statusText}>Your day is clear.</Text></View>
+        ) : (
+          <View style={styles.taskList}>
+            {taskList.map((task) => <TaskRow key={task.id} task={task} disabled={isPending} onToggle={() => { void toggleTodo(task.id, !task.completed).catch(() => undefined); }} />)}
+          </View>
+        )}
+        {isAdding ? (
+          <View style={styles.addRow}>
+            <TextInput autoFocus value={newTaskText} onChangeText={setNewTaskText} onSubmitEditing={handleAddTask} placeholder="What needs your attention?" placeholderTextColor={DAYMARK_COLORS.textSubtle} editable={!isPending} returnKeyType="done" style={styles.input} />
+            <Pressable disabled={!newTaskText.trim() || isPending} onPress={handleAddTask} style={[styles.addIconButton, (!newTaskText.trim() || isPending) && styles.addIconButtonDisabled]} accessibilityRole="button" accessibilityLabel="Save task">
+              <Ionicons name="arrow-up" size={20} color={newTaskText.trim() ? DAYMARK_COLORS.white : DAYMARK_COLORS.textSubtle} />
+            </Pressable>
+          </View>
+        ) : (
+          <Pressable style={styles.addButton} onPress={() => setIsAdding(true)} accessibilityRole="button">
+            <Ionicons name="add" size={23} color={DAYMARK_COLORS.white} />
+            <Text style={styles.addButtonText}>Add a task</Text>
+          </Pressable>
+        )}
+        {isMutationError ? <Text style={styles.errorText}>Couldn’t save that task. Try again.</Text> : null}
       </ScrollView>
-      <BottomNav />
+      <AppBottomNav active="today" />
     </Container>
   );
 }
@@ -143,10 +139,14 @@ const styles = StyleSheet.create({
   taskCheckDone: { backgroundColor: DAYMARK_COLORS.black, borderColor: DAYMARK_COLORS.black },
   taskText: { ...DAYMARK_TYPE.body, color: DAYMARK_COLORS.text, flex: 1 },
   taskTextDone: { color: DAYMARK_COLORS.textMuted, textDecorationLine: "line-through" },
+  statusState: { alignItems: "center", backgroundColor: DAYMARK_COLORS.surface, borderColor: DAYMARK_COLORS.border, borderRadius: DAYMARK_RADII.surface, borderWidth: 1, padding: DAYMARK_SPACING.xl },
+  statusText: { ...DAYMARK_TYPE.body, color: DAYMARK_COLORS.textMuted },
+  retryText: { ...DAYMARK_TYPE.label, color: DAYMARK_COLORS.text, marginTop: DAYMARK_SPACING.md },
   addButton: { alignItems: "center", backgroundColor: DAYMARK_COLORS.black, borderRadius: DAYMARK_RADII.control, flexDirection: "row", gap: DAYMARK_SPACING.sm, justifyContent: "center", minHeight: 52, marginTop: DAYMARK_SPACING.xl },
   addButtonText: { ...DAYMARK_TYPE.label, color: DAYMARK_COLORS.white },
-  bottomNav: { backgroundColor: DAYMARK_COLORS.surface, borderTopColor: DAYMARK_COLORS.border, borderTopWidth: 1, flexDirection: "row", justifyContent: "space-around", paddingBottom: 8, paddingTop: 10 },
-  navItem: { alignItems: "center", gap: 3, minHeight: 44, minWidth: 64 },
-  navLabel: { ...DAYMARK_TYPE.small, color: DAYMARK_COLORS.textMuted, fontSize: 11 },
-  navLabelActive: { color: DAYMARK_COLORS.black, fontWeight: "600" },
+  addRow: { alignItems: "center", backgroundColor: DAYMARK_COLORS.surface, borderColor: DAYMARK_COLORS.border, borderRadius: DAYMARK_RADII.surface, borderWidth: 1, flexDirection: "row", gap: DAYMARK_SPACING.sm, marginTop: DAYMARK_SPACING.xl, padding: DAYMARK_SPACING.sm },
+  input: { ...DAYMARK_TYPE.body, color: DAYMARK_COLORS.text, flex: 1, minHeight: 44, paddingHorizontal: DAYMARK_SPACING.sm },
+  addIconButton: { alignItems: "center", backgroundColor: DAYMARK_COLORS.black, borderRadius: DAYMARK_RADII.control, height: 44, justifyContent: "center", width: 44 },
+  addIconButtonDisabled: { backgroundColor: DAYMARK_COLORS.surfaceMuted },
+  errorText: { ...DAYMARK_TYPE.small, color: DAYMARK_COLORS.danger, marginTop: DAYMARK_SPACING.sm, textAlign: "center" },
 });

@@ -1,35 +1,30 @@
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Container } from "@/components/container";
+import { AppBottomNav, ScreenHeader } from "@/components/daymark-navigation";
 import { DAYMARK_COLORS, DAYMARK_RADII, DAYMARK_SPACING, DAYMARK_TYPE } from "@/constants/daymark";
-import { orpc } from "@/utils/orpc";
+import { useTodos } from "@/hooks/use-todos";
 
 export default function TodosScreen() {
   const [newTodoText, setNewTodoText] = useState("");
-  const todos = useQuery(orpc.todo.getAll.queryOptions());
-  const createMutation = useMutation(orpc.todo.create.mutationOptions({
-    onSuccess: () => { todos.refetch(); setNewTodoText(""); },
-  }));
-  const toggleMutation = useMutation(orpc.todo.toggle.mutationOptions({ onSuccess: () => todos.refetch() }));
-  const deleteMutation = useMutation(orpc.todo.delete.mutationOptions({ onSuccess: () => todos.refetch() }));
-  const taskList = todos.data ?? [];
+  const { taskList, isLoading, isError, refetch, isPending, createTodo, toggleTodo, deleteTodo } = useTodos();
   const completedCount = taskList.filter((todo) => todo.completed).length;
 
   const handleAddTodo = () => {
-    if (newTodoText.trim()) createMutation.mutate({ text: newTodoText.trim() });
+    if (newTodoText.trim()) void createTodo(newTodoText.trim()).catch(() => undefined);
   };
 
   const handleDeleteTodo = (id: number) => {
     Alert.alert("Delete task", "Remove this task from your list?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Delete", style: "destructive", onPress: () => deleteMutation.mutate({ id }) },
+      { text: "Delete", style: "destructive", onPress: () => { void deleteTodo(id).catch(() => undefined); } },
     ]);
   };
 
   return (
     <Container isScrollable={false} style={styles.container}>
+      <ScreenHeader title="Tasks" />
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <View style={styles.headingRow}>
           <View>
@@ -45,16 +40,21 @@ export default function TodosScreen() {
             onSubmitEditing={handleAddTodo}
             placeholder="Add a new task"
             placeholderTextColor={DAYMARK_COLORS.textSubtle}
-            editable={!createMutation.isPending}
+            editable={!isPending}
             returnKeyType="done"
             style={styles.input}
           />
-          <Pressable style={[styles.addIconButton, !newTodoText.trim() && styles.addIconButtonDisabled]} disabled={!newTodoText.trim() || createMutation.isPending} onPress={handleAddTodo} accessibilityRole="button">
+          <Pressable style={[styles.addIconButton, !newTodoText.trim() && styles.addIconButtonDisabled]} disabled={!newTodoText.trim() || isPending} onPress={handleAddTodo} accessibilityRole="button">
             <Ionicons name="add" size={22} color={newTodoText.trim() ? DAYMARK_COLORS.white : DAYMARK_COLORS.textSubtle} />
           </Pressable>
         </View>
-        {todos.isLoading ? (
+        {isLoading ? (
           <View style={styles.emptyState}><Text style={styles.subtitle}>Loading tasks…</Text></View>
+        ) : isError ? (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyTitle}>Couldn’t load tasks</Text>
+            <Pressable onPress={() => refetch()} accessibilityRole="button"><Text style={styles.subtitle}>Try again</Text></Pressable>
+          </View>
         ) : taskList.length === 0 ? (
           <View style={styles.emptyState}>
             <Ionicons name="checkbox-outline" size={40} color={DAYMARK_COLORS.textSubtle} />
@@ -65,7 +65,7 @@ export default function TodosScreen() {
           <View style={styles.taskList}>
             {taskList.map((todo) => (
               <View key={todo.id} style={styles.taskRow}>
-                <Pressable onPress={() => toggleMutation.mutate({ id: todo.id, completed: !todo.completed })} style={[styles.check, todo.completed && styles.checkDone]} accessibilityRole="checkbox" accessibilityState={{ checked: todo.completed }}>
+                <Pressable onPress={() => { void toggleTodo(todo.id, !todo.completed).catch(() => undefined); }} style={[styles.check, todo.completed && styles.checkDone]} accessibilityRole="checkbox" accessibilityState={{ checked: todo.completed }}>
                   {todo.completed ? <Ionicons name="checkmark" size={14} color={DAYMARK_COLORS.white} /> : null}
                 </Pressable>
                 <Text style={[styles.taskText, todo.completed && styles.taskTextDone]}>{todo.text}</Text>
@@ -77,6 +77,7 @@ export default function TodosScreen() {
           </View>
         )}
       </ScrollView>
+      <AppBottomNav active="tasks" />
     </Container>
   );
 }

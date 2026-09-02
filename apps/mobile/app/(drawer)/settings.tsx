@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Container } from "@/components/container";
+import { AppBottomNav, ScreenHeader } from "@/components/daymark-navigation";
 import { DAYMARK_COLORS, DAYMARK_RADII, DAYMARK_SPACING, DAYMARK_TYPE } from "@/constants/daymark";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -12,6 +13,7 @@ const settings = [
 export default function SettingsScreen() {
   return (
     <Container isScrollable={false} style={styles.container}>
+      <ScreenHeader title="Settings" />
       <View style={styles.content}>
         <View style={styles.iconWrap}><Ionicons name="settings-outline" size={28} color={DAYMARK_COLORS.text} /></View>
         <Text style={styles.pageTitle}>Settings</Text>
@@ -25,6 +27,7 @@ export default function SettingsScreen() {
           ))}
         </View>
       </View>
+      <AppBottomNav active="settings" />
     </Container>
   );
 }

@@ -7,6 +7,7 @@ export const DAYMARK_COLORS = {
   text: "#111111",
   textMuted: "#666666",
   textSubtle: "#888888",
+  danger: "#8A1C1C",
   black: "#000000",
   white: "#FFFFFF",
 } as const;
