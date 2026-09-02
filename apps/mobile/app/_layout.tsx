@@ -8,6 +8,7 @@ import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
+import { DAYMARK_COLORS } from "@/constants/daymark";
 
   import { queryClient } from "@/utils/orpc";
 
@@ -19,9 +20,9 @@ export const unstable_settings = {
 
 function StackLayout() {
   return (
-    <Stack screenOptions={{}}>
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: DAYMARK_COLORS.canvas } }}>
       <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{ title: "Modal", presentation: "modal" }} />
+      <Stack.Screen name="modal" options={{ title: "Settings", presentation: "modal" }} />
     </Stack>
   );
 }

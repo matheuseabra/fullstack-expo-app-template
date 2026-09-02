@@ -1,75 +1,49 @@
-import React, { useCallback } from "react";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import { Drawer } from "expo-router/drawer";
-import { useThemeColor } from "heroui-native";
-import { Pressable, Text } from "react-native";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { StyleSheet } from "react-native";
+import { DAYMARK_COLORS, DAYMARK_TYPE } from "@/constants/daymark";
 
 function DrawerLayout() {
-  const themeColorForeground = useThemeColor("foreground");
-  const themeColorBackground = useThemeColor("background");
-
-  const renderThemeToggle = useCallback(() => <ThemeToggle />, []);
-
   return (
     <Drawer
       screenOptions={{
-        headerTintColor: themeColorForeground,
-        headerStyle: { backgroundColor: themeColorBackground },
-        headerTitleStyle: {
-          fontWeight: "600",
-          color: themeColorForeground,
-        },
-        headerRight: renderThemeToggle,
-        drawerStyle: { backgroundColor: themeColorBackground },
+        headerShown: false,
+        drawerActiveTintColor: DAYMARK_COLORS.text,
+        drawerInactiveTintColor: DAYMARK_COLORS.textMuted,
+        drawerLabelStyle: styles.drawerLabel,
+        drawerStyle: styles.drawer,
+        drawerContentStyle: styles.drawerContent,
       }}
     >
       <Drawer.Screen
         name="index"
         options={{
-          headerTitle: "Home",
-          drawerLabel: ({ color, focused }) => (
-            <Text style={{ color: focused ? color : themeColorForeground }}>Home</Text>
-          ),
-          drawerIcon: ({ size, color, focused }) => (
-            <Ionicons name="home-outline" size={size} color={focused ? color : themeColorForeground} />
-          ),
+          drawerLabel: "Today",
+          drawerIcon: ({ size, color }) => <Ionicons name="checkbox-outline" size={size} color={color} />,
         }}
       />
       <Drawer.Screen
         name="(tabs)"
         options={{
-          headerTitle: "Tabs",
-          drawerLabel: ({ color, focused }) => (
-            <Text style={{ color: focused ? color : themeColorForeground }}>Tabs</Text>
-          ),
-          drawerIcon: ({ size, color, focused }) => (
-            <MaterialIcons name="border-bottom" size={size} color={focused ? color : themeColorForeground} />
-          ),
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable className="mr-4">
-                <Ionicons name="add-outline" size={24} color={themeColorForeground} />
-              </Pressable>
-            </Link>
-          ),
+          drawerLabel: "Week",
+          drawerIcon: ({ size, color }) => <Ionicons name="calendar-outline" size={size} color={color} />,
         }}
       />
       <Drawer.Screen
         name="todos"
         options={{
-          headerTitle: "Todos",
-          drawerLabel: ({ color, focused }) => (
-            <Text style={{ color: focused ? color : themeColorForeground }}>Todos</Text>
-          ),
-          drawerIcon: ({ size, color, focused }) => (
-            <Ionicons name="checkbox-outline" size={size} color={focused ? color : themeColorForeground} />
-          ),
+          drawerLabel: "Tasks",
+          drawerIcon: ({ size, color }) => <Ionicons name="list-outline" size={size} color={color} />,
         }}
       />
     </Drawer>
   );
 }
+
+const styles = StyleSheet.create({
+  drawer: { backgroundColor: DAYMARK_COLORS.surface, width: 280 },
+  drawerContent: { paddingTop: 48 },
+  drawerLabel: { ...DAYMARK_TYPE.label, color: DAYMARK_COLORS.text },
+});
 
 export default DrawerLayout;

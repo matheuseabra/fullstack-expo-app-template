@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useMemo } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo } from 'react';
 import { Uniwind, useUniwind } from 'uniwind';
 
 type ThemeName = 'light' | 'dark';
@@ -17,6 +17,10 @@ const AppThemeContext = createContext<AppThemeContextType | undefined>(
 
 export const AppThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const { theme } = useUniwind();
+
+    useEffect(() => {
+        if (theme !== 'light') Uniwind.setTheme('light');
+    }, [theme]);
 
     const isLight = useMemo(() => {
         return theme === 'light';
@@ -59,4 +63,3 @@ export function useAppTheme() {
     }
     return context;
 }
-
