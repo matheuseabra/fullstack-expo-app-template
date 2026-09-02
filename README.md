@@ -83,18 +83,78 @@ Docker Compose reads `apps/server/.env`. Use a hosted database or provide a data
 ## Project structure
 
 ```text
-apps/
-  mobile/   Expo / React Native app
-  server/   Hono API server
-  web/      TanStack Router web app
-packages/
-  api/      oRPC routers and application context
-  auth/     Better Auth configuration
-  config/   Shared TypeScript configuration
-  db/       Drizzle schema and database client
-  env/      Runtime environment validation
-  ui/       Shared UI components and styles
+.
+├── .agent/
+│   └── skills/
+│       ├── drizzle-libsql/SKILL.md
+│       ├── expo-mobile/SKILL.md
+│       ├── hono-orpc-api/SKILL.md
+│       ├── shared-ui/SKILL.md
+│       └── tanstack-web/SKILL.md
+├── .github/workflows/ci.yml
+├── apps/
+│   ├── mobile/
+│   │   ├── app/
+│   │   │   ├── (drawer)/
+│   │   │   │   ├── (tabs)/
+│   │   │   │   │   ├── _layout.tsx
+│   │   │   │   │   ├── index.tsx
+│   │   │   │   │   └── two.tsx
+│   │   │   │   ├── _layout.tsx
+│   │   │   │   ├── index.tsx
+│   │   │   │   └── todos.tsx
+│   │   │   ├── +not-found.tsx
+│   │   │   ├── _layout.tsx
+│   │   │   └── modal.tsx
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── lib/
+│   │   ├── utils/
+│   │   ├── app.json
+│   │   ├── metro.config.js
+│   │   └── package.json
+│   ├── server/
+│   │   ├── src/index.ts
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   └── tsdown.config.ts
+│   └── web/
+│       ├── src/
+│       │   ├── components/
+│       │   ├── routes/
+│       │   │   ├── _auth/
+│       │   │   │   ├── dashboard.tsx
+│       │   │   │   └── route.tsx
+│       │   │   ├── __root.tsx
+│       │   │   ├── index.tsx
+│       │   │   ├── login.tsx
+│       │   │   └── todos.tsx
+│       │   ├── lib/
+│       │   └── utils/
+│       ├── index.html
+│       ├── package.json
+│       └── vite.config.ts
+├── docs/ARCHITECTURE.md
+├── packages/
+│   ├── api/src/              # oRPC context and routers
+│   ├── auth/src/             # Better Auth configuration
+│   ├── config/               # Shared TypeScript configuration
+│   ├── db/src/               # Drizzle schema and libSQL client
+│   ├── env/src/              # Server, web, and native env validation
+│   └── ui/src/               # Shared UI components and styles
+├── AGENTS.md
+├── DESIGN.md
+├── LICENSE
+├── README.md
+├── SECURITY.md
+├── bun.lock
+├── docker-compose.yml
+├── package.json
+├── tsconfig.json
+└── turbo.json
 ```
+
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for dependency and request-flow diagrams, [`DESIGN.md`](DESIGN.md) for the visual system, and [`AGENTS.md`](AGENTS.md) for repository operating instructions.
 
 ## Quality checks
 
