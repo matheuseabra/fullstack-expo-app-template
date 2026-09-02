@@ -22,31 +22,6 @@ flowchart LR
     linkStyle default stroke-width:1px,fill:none
 ```
 
-## Workspace dependency direction
-
-```mermaid
-%%{init: {"flowchart": {"curve": "linear"}, "themeVariables": {"lineColor": "#888888"}}}%%
-flowchart TD
-    Root[Root workspace\nBun + Turborepo]
-    Root --> Web[apps/web]
-    Root --> Mobile[apps/mobile]
-    Root --> Server[apps/server]
-    Web --> UI[packages/ui]
-    Web --> API[packages/api]
-    Web --> Env[packages/env]
-    Mobile --> API
-    Mobile --> Env
-    Server --> API
-    Server --> Auth[packages/auth]
-    Server --> Env
-    API --> Auth
-    API --> DB[packages/db]
-    Auth --> DB
-    Auth --> Env
-    DB --> Env
-    linkStyle default stroke-width:1px,fill:none
-```
-
 The dependency direction is intentionally simple: clients depend on typed contracts, the server composes the HTTP boundary, and persistence stays behind `packages/db`.
 
 ## HTTP request flow
