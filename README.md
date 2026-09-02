@@ -1,5 +1,7 @@
 # fullstack-expo-app-template
 
+[![CI](https://github.com/matheuseabra/fullstack-expo-app-template/actions/workflows/ci.yml/badge.svg)](https://github.com/matheuseabra/fullstack-expo-app-template/actions/workflows/ci.yml) [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/matheuseabra/fullstack-expo-app-template/releases) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A Bun/Turborepo full-stack template with a TanStack Router web app, Expo mobile app, Hono API, oRPC, Drizzle/libSQL, Better Auth, and shared UI components.
 
 ## Requirements
