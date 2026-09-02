@@ -23,7 +23,7 @@ function DrawerLayout() {
         }}
       />
       <Drawer.Screen
-        name="(tabs)"
+        name="week"
         options={{
           drawerLabel: "Week",
           drawerIcon: ({ size, color }) => <Ionicons name="calendar-outline" size={size} color={color} />,
@@ -34,6 +34,13 @@ function DrawerLayout() {
         options={{
           drawerLabel: "Tasks",
           drawerIcon: ({ size, color }) => <Ionicons name="list-outline" size={size} color={color} />,
+        }}
+      />
+      <Drawer.Screen
+        name="settings"
+        options={{
+          drawerLabel: "Settings",
+          drawerIcon: ({ size, color }) => <Ionicons name="settings-outline" size={size} color={color} />,
         }}
       />
     </Drawer>

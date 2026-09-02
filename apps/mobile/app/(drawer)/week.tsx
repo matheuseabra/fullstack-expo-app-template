@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Container } from "@/components/container";
+import { AppBottomNav, ScreenHeader } from "@/components/daymark-navigation";
 import { DAYMARK_COLORS, DAYMARK_RADII, DAYMARK_SPACING, DAYMARK_TYPE } from "@/constants/daymark";
 import { useTodos } from "@/hooks/use-todos";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -41,6 +42,7 @@ export default function WeekScreen() {
 
   return (
     <Container isScrollable={false} style={styles.container}>
+      <ScreenHeader title="Week" />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.pageTitle}>Week</Text>
         <Text style={styles.dateRange}>{formatDate(weekStart, { month: "short", day: "numeric" })} — {formatDate(days[6], { month: "short", day: "numeric" })}</Text>
@@ -88,6 +90,7 @@ export default function WeekScreen() {
           </View>
         )}
       </ScrollView>
+      <AppBottomNav active="week" />
     </Container>
   );
 }

@@ -1,10 +1,10 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Container } from "@/components/container";
 import { DAYMARK_COLORS, DAYMARK_RADII, DAYMARK_SPACING, DAYMARK_TYPE } from "@/constants/daymark";
+import { AppBottomNav, MenuButton } from "@/components/daymark-navigation";
 import { useTodos } from "@/hooks/use-todos";
 
 function BrandRow() {
@@ -17,7 +17,7 @@ function BrandRow() {
         </View>
         <Text style={styles.brandName}>daymark</Text>
       </View>
-      <Ionicons name="menu-outline" size={25} color={DAYMARK_COLORS.text} accessibilityLabel="Open menu" />
+      <MenuButton />
     </View>
   );
 }
@@ -46,27 +46,6 @@ function TaskRow({ task, onToggle, disabled }: { task: { text: string; completed
       </View>
       <Text style={[styles.taskText, task.completed && styles.taskTextDone]}>{task.text}</Text>
     </Pressable>
-  );
-}
-
-function BottomNav() {
-  const router = useRouter();
-  const items = useMemo(() => [
-    { label: "Today", icon: "checkbox-outline" as const },
-    { label: "Week", icon: "calendar-outline" as const, onPress: () => router.push("/(drawer)/(tabs)") },
-    { label: "Tasks", icon: "list-outline" as const, onPress: () => router.push("/(drawer)/todos") },
-    { label: "Settings", icon: "settings-outline" as const, onPress: () => router.push("/(drawer)/(tabs)/two") },
-  ], [router]);
-
-  return (
-    <View style={styles.bottomNav}>
-      {items.map((item, index) => (
-        <Pressable key={item.label} style={styles.navItem} onPress={item.onPress} accessibilityRole="button">
-          <Ionicons name={item.icon} size={21} color={index === 0 ? DAYMARK_COLORS.black : DAYMARK_COLORS.textMuted} />
-          <Text style={[styles.navLabel, index === 0 && styles.navLabelActive]}>{item.label}</Text>
-        </Pressable>
-      ))}
-    </View>
   );
 }
 
@@ -132,7 +111,7 @@ export default function Home() {
         )}
         {create.isError ? <Text style={styles.errorText}>Couldn’t save that task. Try again.</Text> : null}
       </ScrollView>
-      <BottomNav />
+      <AppBottomNav active="today" />
     </Container>
   );
 }
@@ -172,8 +151,4 @@ const styles = StyleSheet.create({
   addIconButton: { alignItems: "center", backgroundColor: DAYMARK_COLORS.black, borderRadius: DAYMARK_RADII.control, height: 44, justifyContent: "center", width: 44 },
   addIconButtonDisabled: { backgroundColor: DAYMARK_COLORS.surfaceMuted },
   errorText: { ...DAYMARK_TYPE.small, color: DAYMARK_COLORS.danger, marginTop: DAYMARK_SPACING.sm, textAlign: "center" },
-  bottomNav: { backgroundColor: DAYMARK_COLORS.surface, borderTopColor: DAYMARK_COLORS.border, borderTopWidth: 1, flexDirection: "row", justifyContent: "space-around", paddingBottom: 8, paddingTop: 10 },
-  navItem: { alignItems: "center", gap: 3, minHeight: 44, minWidth: 64 },
-  navLabel: { ...DAYMARK_TYPE.small, color: DAYMARK_COLORS.textMuted, fontSize: 11 },
-  navLabelActive: { color: DAYMARK_COLORS.black, fontWeight: "600" },
 });

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Container } from "@/components/container";
+import { AppBottomNav, ScreenHeader } from "@/components/daymark-navigation";
 import { DAYMARK_COLORS, DAYMARK_RADII, DAYMARK_SPACING, DAYMARK_TYPE } from "@/constants/daymark";
 import { useTodos } from "@/hooks/use-todos";
 
@@ -23,6 +24,7 @@ export default function TodosScreen() {
 
   return (
     <Container isScrollable={false} style={styles.container}>
+      <ScreenHeader title="Tasks" />
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <View style={styles.headingRow}>
           <View>
@@ -75,6 +77,7 @@ export default function TodosScreen() {
           </View>
         )}
       </ScrollView>
+      <AppBottomNav active="tasks" />
     </Container>
   );
 }
