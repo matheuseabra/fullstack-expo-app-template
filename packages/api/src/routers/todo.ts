@@ -16,6 +16,7 @@ export const todoRouter = {
         .insert(todo)
         .values({
           text: input.text,
+          createdAt: Date.now(),
         });
     }),
 
@@ -34,4 +35,3 @@ export const todoRouter = {
       return await db.delete(todo).where(eq(todo.id, input.id));
     }),
 };
-
