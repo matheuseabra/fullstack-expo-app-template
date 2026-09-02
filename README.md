@@ -85,65 +85,22 @@ Docker Compose reads `apps/server/.env`. Use a hosted database or provide a data
 ```text
 .
 ├── .agent/
-│   └── skills/
-│       ├── drizzle-libsql/SKILL.md
-│       ├── expo-mobile/SKILL.md
-│       ├── hono-orpc-api/SKILL.md
-│       ├── shared-ui/SKILL.md
-│       └── tanstack-web/SKILL.md
+│   └── skills/              # Repo-local stack guidance for agents
 ├── .github/workflows/ci.yml
 ├── apps/
-│   ├── mobile/
-│   │   ├── app/
-│   │   │   ├── (drawer)/
-│   │   │   │   ├── (tabs)/
-│   │   │   │   │   ├── _layout.tsx
-│   │   │   │   │   ├── index.tsx
-│   │   │   │   │   └── two.tsx
-│   │   │   │   ├── _layout.tsx
-│   │   │   │   ├── index.tsx
-│   │   │   │   └── todos.tsx
-│   │   │   ├── +not-found.tsx
-│   │   │   ├── _layout.tsx
-│   │   │   └── modal.tsx
-│   │   ├── components/
-│   │   ├── contexts/
-│   │   ├── lib/
-│   │   ├── utils/
-│   │   ├── app.json
-│   │   ├── metro.config.js
-│   │   └── package.json
-│   ├── server/
-│   │   ├── src/index.ts
-│   │   ├── Dockerfile
-│   │   ├── package.json
-│   │   └── tsdown.config.ts
-│   └── web/
-│       ├── src/
-│       │   ├── components/
-│       │   ├── routes/
-│       │   │   ├── _auth/
-│       │   │   │   ├── dashboard.tsx
-│       │   │   │   └── route.tsx
-│       │   │   ├── __root.tsx
-│       │   │   ├── index.tsx
-│       │   │   ├── login.tsx
-│       │   │   └── todos.tsx
-│       │   ├── lib/
-│       │   └── utils/
-│       ├── index.html
-│       ├── package.json
-│       └── vite.config.ts
+│   ├── mobile/              # Expo / React Native app
+│   ├── server/              # Bun / Hono API server
+│   └── web/                 # Vite / TanStack Router app
 ├── docs/
 │   ├── ARCHITECTURE.md
 │   └── DESIGN.md
 ├── packages/
-│   ├── api/src/              # oRPC context and routers
-│   ├── auth/src/             # Better Auth configuration
+│   ├── api/                  # oRPC context and routers
+│   ├── auth/                 # Better Auth configuration
 │   ├── config/               # Shared TypeScript configuration
-│   ├── db/src/               # Drizzle schema and libSQL client
-│   ├── env/src/              # Server, web, and native env validation
-│   └── ui/src/               # Shared UI components and styles
+│   ├── db/                   # Drizzle schema and libSQL client
+│   ├── env/                  # Runtime environment validation
+│   └── ui/                   # Shared UI components and styles
 ├── AGENTS.md
 ├── LICENSE
 ├── README.md
