@@ -12,12 +12,14 @@ export const todoRouter = {
   create: publicProcedure
     .input(z.object({ text: z.string().min(1) }))
     .handler(async ({ input }) => {
-      return await db
+      const [created] = await db
         .insert(todo)
         .values({
           text: input.text,
           createdAt: Date.now(),
-        });
+        })
+        .returning();
+      return created;
     }),
 
   toggle: publicProcedure
