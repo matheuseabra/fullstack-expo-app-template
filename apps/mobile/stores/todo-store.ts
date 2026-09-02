@@ -16,7 +16,6 @@ type TodoStore = {
   pendingOperations: number;
   loadError: string | null;
   mutationError: string | null;
-  syncError: string | null;
   hydrate: () => Promise<void>;
   sync: () => Promise<void>;
   createTodo: (text: string) => Promise<void>;
@@ -57,7 +56,6 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
   pendingOperations: 0,
   loadError: null,
   mutationError: null,
-  syncError: null,
   hydrate: async () => {
     if (get().isHydrated) return;
     try {
@@ -70,12 +68,12 @@ export const useTodoStore = create<TodoStore>((set, get) => ({
   },
   sync: async () => {
     if (get().isSyncing) return;
-    set({ isSyncing: true, syncError: null });
+    set({ isSyncing: true });
     try {
       await syncLocalTodos();
       await refresh(set);
     } catch (error) {
-      set({ syncError: errorMessage(error) });
+      console.warn("Todo sync failed", errorMessage(error));
     } finally {
       set({ isSyncing: false });
     }

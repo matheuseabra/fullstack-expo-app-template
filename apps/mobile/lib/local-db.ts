@@ -19,9 +19,7 @@ type RemoteTodo = Todo;
 const DATABASE_NAME = "daymark.db";
 let databasePromise: Promise<SQLite.SQLiteDatabase> | undefined;
 let localIdSequence = 0;
-let syncPromise: Promise<SyncResult> | undefined;
-
-export type SyncResult = "synced" | "offline";
+let syncPromise: Promise<void> | undefined;
 
 function database() {
   databasePromise ??= SQLite.openDatabaseAsync(DATABASE_NAME);
@@ -170,14 +168,13 @@ async function pullRemoteTodos(db: SQLite.SQLiteDatabase) {
   }
 }
 
-async function performSync(): Promise<SyncResult> {
+async function performSync(): Promise<void> {
   const db = await initializeLocalDb();
   const network = await Network.getNetworkStateAsync();
-  if (!network.isConnected) return "offline";
+  if (!network.isConnected) return;
   const queue = await db.getAllAsync<SyncQueueRow>("SELECT id, operation, local_id, payload FROM sync_queue ORDER BY created_at ASC, id ASC");
   for (const item of queue) await pushQueueItem(db, item);
   await pullRemoteTodos(db);
-  return "synced";
 }
 
 export function syncLocalTodos() {

@@ -8,17 +8,17 @@ import { useTodos } from "@/hooks/use-todos";
 
 export default function TodosScreen() {
   const [newTodoText, setNewTodoText] = useState("");
-  const { taskList, isLoading, isError, refetch, create: createMutation, toggle: toggleMutation, remove: deleteMutation } = useTodos();
+  const { taskList, isLoading, isError, refetch, isPending, createTodo, toggleTodo, deleteTodo } = useTodos();
   const completedCount = taskList.filter((todo) => todo.completed).length;
 
   const handleAddTodo = () => {
-    if (newTodoText.trim()) createMutation.mutate({ text: newTodoText.trim() });
+    if (newTodoText.trim()) void createTodo(newTodoText.trim()).catch(() => undefined);
   };
 
   const handleDeleteTodo = (id: number) => {
     Alert.alert("Delete task", "Remove this task from your list?", [
       { text: "Cancel", style: "cancel" },
-      { text: "Delete", style: "destructive", onPress: () => deleteMutation.mutate({ id }) },
+      { text: "Delete", style: "destructive", onPress: () => { void deleteTodo(id).catch(() => undefined); } },
     ]);
   };
 
@@ -40,11 +40,11 @@ export default function TodosScreen() {
             onSubmitEditing={handleAddTodo}
             placeholder="Add a new task"
             placeholderTextColor={DAYMARK_COLORS.textSubtle}
-            editable={!createMutation.isPending}
+            editable={!isPending}
             returnKeyType="done"
             style={styles.input}
           />
-          <Pressable style={[styles.addIconButton, !newTodoText.trim() && styles.addIconButtonDisabled]} disabled={!newTodoText.trim() || createMutation.isPending} onPress={handleAddTodo} accessibilityRole="button">
+          <Pressable style={[styles.addIconButton, !newTodoText.trim() && styles.addIconButtonDisabled]} disabled={!newTodoText.trim() || isPending} onPress={handleAddTodo} accessibilityRole="button">
             <Ionicons name="add" size={22} color={newTodoText.trim() ? DAYMARK_COLORS.white : DAYMARK_COLORS.textSubtle} />
           </Pressable>
         </View>
@@ -65,7 +65,7 @@ export default function TodosScreen() {
           <View style={styles.taskList}>
             {taskList.map((todo) => (
               <View key={todo.id} style={styles.taskRow}>
-                <Pressable onPress={() => toggleMutation.mutate({ id: todo.id, completed: !todo.completed })} style={[styles.check, todo.completed && styles.checkDone]} accessibilityRole="checkbox" accessibilityState={{ checked: todo.completed }}>
+                <Pressable onPress={() => { void toggleTodo(todo.id, !todo.completed).catch(() => undefined); }} style={[styles.check, todo.completed && styles.checkDone]} accessibilityRole="checkbox" accessibilityState={{ checked: todo.completed }}>
                   {todo.completed ? <Ionicons name="checkmark" size={14} color={DAYMARK_COLORS.white} /> : null}
                 </Pressable>
                 <Text style={[styles.taskText, todo.completed && styles.taskTextDone]}>{todo.text}</Text>

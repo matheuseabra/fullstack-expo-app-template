@@ -57,19 +57,17 @@ export default function Home() {
   const insets = useSafeAreaInsets();
   const [isAdding, setIsAdding] = useState(false);
   const [newTaskText, setNewTaskText] = useState("");
-  const { taskList, isLoading, isError, refetch, create, toggle } = useTodos();
+  const { taskList, isLoading, isError, refetch, isPending, isMutationError, createTodo, toggleTodo } = useTodos();
   const completedCount = taskList.filter((task) => task.completed).length;
   const today = new Date();
 
   const handleAddTask = () => {
     const text = newTaskText.trim();
-    if (!text || create.isPending) return;
-    create.mutate({ text }, {
-      onSuccess: () => {
+    if (!text || isPending) return;
+    void createTodo(text).then(() => {
         setNewTaskText("");
         setIsAdding(false);
-      },
-    });
+      }).catch(() => undefined);
   };
 
   return (
@@ -93,13 +91,13 @@ export default function Home() {
           <View style={styles.statusState}><Text style={styles.statusText}>Your day is clear.</Text></View>
         ) : (
           <View style={styles.taskList}>
-            {taskList.map((task) => <TaskRow key={task.id} task={task} disabled={toggle.isPending} onToggle={() => toggle.mutate({ id: task.id, completed: !task.completed })} />)}
+            {taskList.map((task) => <TaskRow key={task.id} task={task} disabled={isPending} onToggle={() => { void toggleTodo(task.id, !task.completed).catch(() => undefined); }} />)}
           </View>
         )}
         {isAdding ? (
           <View style={styles.addRow}>
-            <TextInput autoFocus value={newTaskText} onChangeText={setNewTaskText} onSubmitEditing={handleAddTask} placeholder="What needs your attention?" placeholderTextColor={DAYMARK_COLORS.textSubtle} editable={!create.isPending} returnKeyType="done" style={styles.input} />
-            <Pressable disabled={!newTaskText.trim() || create.isPending} onPress={handleAddTask} style={[styles.addIconButton, (!newTaskText.trim() || create.isPending) && styles.addIconButtonDisabled]} accessibilityRole="button" accessibilityLabel="Save task">
+            <TextInput autoFocus value={newTaskText} onChangeText={setNewTaskText} onSubmitEditing={handleAddTask} placeholder="What needs your attention?" placeholderTextColor={DAYMARK_COLORS.textSubtle} editable={!isPending} returnKeyType="done" style={styles.input} />
+            <Pressable disabled={!newTaskText.trim() || isPending} onPress={handleAddTask} style={[styles.addIconButton, (!newTaskText.trim() || isPending) && styles.addIconButtonDisabled]} accessibilityRole="button" accessibilityLabel="Save task">
               <Ionicons name="arrow-up" size={20} color={newTaskText.trim() ? DAYMARK_COLORS.white : DAYMARK_COLORS.textSubtle} />
             </Pressable>
           </View>
@@ -109,7 +107,7 @@ export default function Home() {
             <Text style={styles.addButtonText}>Add a task</Text>
           </Pressable>
         )}
-        {create.isError ? <Text style={styles.errorText}>Couldn’t save that task. Try again.</Text> : null}
+        {isMutationError ? <Text style={styles.errorText}>Couldn’t save that task. Try again.</Text> : null}
       </ScrollView>
       <AppBottomNav active="today" />
     </Container>
