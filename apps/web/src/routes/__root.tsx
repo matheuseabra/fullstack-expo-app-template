@@ -21,7 +21,15 @@ export const Route = createRootRoute({
     links: [
       {
         rel: "icon",
-        href: "/favicon.ico",
+        href: "/daymark-icon.png",
+        type: "image/png",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        rel: "icon",
+        href: "/daymark-icon-dark.png",
+        type: "image/png",
+        media: "(prefers-color-scheme: dark)",
       },
     ],
   }),

@@ -16,11 +16,11 @@ const AppThemeContext = createContext<AppThemeContextType | undefined>(
 );
 
 export const AppThemeProvider = ({ children }: { children: React.ReactNode }) => {
-    const { theme } = useUniwind();
+    const { theme, hasAdaptiveThemes } = useUniwind();
 
     useEffect(() => {
-        if (theme !== 'light') Uniwind.setTheme('light');
-    }, [theme]);
+        if (!hasAdaptiveThemes) Uniwind.setTheme('system');
+    }, [hasAdaptiveThemes]);
 
     const isLight = useMemo(() => {
         return theme === 'light';

@@ -1,82 +1,127 @@
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation, useRouter, type Href } from "expo-router";
+import { ArrowLeftIcon, CalendarBlankIcon, CheckSquareIcon, CircleIcon, DotsThreeIcon, GearIcon, ListIcon, PlusIcon, type Icon } from "phosphor-react-native";
+import { Tabs, useRouter } from "expo-router";
+import { type ComponentProps } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { DAYMARK_COLORS, DAYMARK_SPACING, DAYMARK_TYPE } from "@/constants/daymark";
+import { DAYMARK_RADII, DAYMARK_SPACING } from "@/constants/daymark";
+import { useDaymarkColors } from "@/hooks/use-daymark-theme";
+import { hapticLight, hapticMedium, hapticSelection } from "@/utils/haptics";
 
-type NavigationKey = "today" | "week" | "tasks" | "settings";
-type DrawerNavigation = { openDrawer?: () => void; getParent?: () => DrawerNavigation | undefined };
+type TabBarProps = NonNullable<ComponentProps<typeof Tabs>["tabBar"]> extends (props: infer Props) => unknown ? Props : never;
+type TabRoute = TabBarProps["state"]["routes"][number];
 
-const navigationItems: Array<{ key: NavigationKey; label: string; icon: keyof typeof Ionicons.glyphMap; path: Href }> = [
-  { key: "today", label: "Today", icon: "checkbox-outline", path: "/(drawer)" },
-  { key: "week", label: "Week", icon: "calendar-outline", path: "/(drawer)/week" },
-  { key: "tasks", label: "Tasks", icon: "list-outline", path: "/(drawer)/todos" },
-  { key: "settings", label: "Settings", icon: "settings-outline", path: "/(drawer)/settings" },
-];
+const tabIcons: Record<string, Icon> = {
+  index: CheckSquareIcon,
+  week: CalendarBlankIcon,
+  todos: ListIcon,
+  settings: GearIcon,
+};
 
-export function MenuButton() {
-  const navigation = useNavigation();
+const tabLabels: Record<string, string> = {
+  index: "Today",
+  week: "Week",
+  todos: "Tasks",
+  settings: "Settings",
+};
+
+export function ScreenHeader({ title }: { title: string }) {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const colors = useDaymarkColors();
+  const styles = makeStyles(colors);
 
   return (
-    <Pressable onPress={() => findDrawer(navigation as unknown as DrawerNavigation)?.openDrawer?.()} style={styles.iconButton} accessibilityRole="button" accessibilityLabel="Open menu">
-      <Ionicons name="menu-outline" size={25} color={DAYMARK_COLORS.text} />
+    <View style={[styles.header, { paddingTop: insets.top + DAYMARK_SPACING.sm }]}>
+      <Pressable onPress={() => { hapticLight(); router.replace("/(tabs)"); }} style={styles.floatingButton} accessibilityRole="button" accessibilityLabel={`Go back from ${title} to Today`}>
+        <ArrowLeftIcon size={22} weight="bold" color={colors.text} />
+      </Pressable>
+      <View accessible accessibilityLabel={title} style={styles.headerTitleSpacer} />
+      <OverflowButton />
+    </View>
+  );
+}
+
+export function OverflowButton() {
+  const colors = useDaymarkColors();
+  const styles = makeStyles(colors);
+
+  return (
+    <Pressable style={styles.floatingButton} accessibilityRole="button" accessibilityLabel="More options">
+      <DotsThreeIcon size={22} weight="bold" color={colors.text} />
     </Pressable>
   );
 }
 
-function findDrawer(navigation: DrawerNavigation) {
-  let current: DrawerNavigation | undefined = navigation;
-  for (let depth = 0; depth < 3 && current; depth += 1) {
-    if (current.openDrawer) return current;
-    current = current.getParent?.();
-  }
-  return undefined;
-}
+function TabButton({ route, index, props }: { route: TabRoute; index: number; props: TabBarProps }) {
+  const isFocused = props.state.index === index;
+  const label = tabLabels[route.name] ?? route.name;
+  const colors = useDaymarkColors();
+  const styles = makeStyles(colors);
+  const TabIcon = tabIcons[route.name] ?? CircleIcon;
 
-export function ScreenHeader({ title }: { title: string }) {
-  const router = useRouter();
-  const navigation = useNavigation();
-  const insets = useSafeAreaInsets();
-
-  return (
-    <View style={[styles.header, { paddingTop: insets.top + DAYMARK_SPACING.sm }]}>
-      <Pressable onPress={() => router.replace("/(drawer)")} style={styles.iconButton} accessibilityRole="button" accessibilityLabel="Go back to Today">
-        <Ionicons name="arrow-back" size={22} color={DAYMARK_COLORS.text} />
-      </Pressable>
-      <Text style={styles.headerTitle}>{title}</Text>
-      <MenuButton />
-    </View>
-  );
-}
-
-export function AppBottomNav({ active }: { active: NavigationKey }) {
-  const router = useRouter();
-  const handleNavigation = (item: (typeof navigationItems)[number]) => {
-    if (item.key === active) return;
-    router.replace(item.path);
+  const handlePress = () => {
+    const event = props.navigation.emit({ type: "tabPress", target: route.key, canPreventDefault: true });
+    if (!isFocused && !event.defaultPrevented) {
+      hapticSelection();
+      props.navigation.navigate(route.name);
+    }
   };
 
   return (
-    <View style={styles.bottomNav}>
-      {navigationItems.map((item) => {
-        const isActive = item.key === active;
-        return (
-          <Pressable key={item.key} style={styles.navItem} onPress={() => handleNavigation(item)} accessibilityRole="button" accessibilityState={{ selected: isActive }}>
-            <Ionicons name={item.icon} size={21} color={isActive ? DAYMARK_COLORS.black : DAYMARK_COLORS.textMuted} />
-            <Text style={[styles.navLabel, isActive && styles.navLabelActive]}>{item.label}</Text>
-          </Pressable>
-        );
-      })}
+    <Pressable
+      accessibilityRole="tab"
+      accessibilityLabel={label}
+      accessibilityState={{ selected: isFocused }}
+      onPress={handlePress}
+      style={styles.navItem}
+    >
+      <TabIcon size={22} weight={isFocused ? "fill" : "regular"} color={isFocused ? colors.black : colors.textMuted} />
+    </Pressable>
+  );
+}
+
+export function DaymarkTabBar(props: TabBarProps) {
+  const insets = useSafeAreaInsets();
+  const colors = useDaymarkColors();
+  const styles = makeStyles(colors);
+  const leftTabs = props.state.routes.slice(0, 2);
+  const rightTabs = props.state.routes.slice(2);
+  const activeRouteName = props.state.routes[props.state.index]?.name;
+  const showFab = activeRouteName === "index" || activeRouteName === "todos";
+
+  return (
+    <View style={[styles.bottomNav, { paddingBottom: insets.bottom + DAYMARK_SPACING.md }]}>
+      <View style={styles.tabBarPill}>
+        <View style={styles.tabGroup}>
+          {leftTabs.map((route, index) => <TabButton key={route.key} route={route} index={index} props={props} />)}
+        </View>
+        <View style={styles.tabGroup}>
+          {rightTabs.map((route, index) => <TabButton key={route.key} route={route} index={index + 2} props={props} />)}
+        </View>
+      </View>
+      {showFab ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Add task"
+          onPress={() => { hapticMedium(); props.navigation.navigate("todos", { focus: "1" }); }}
+          style={styles.fab}
+        >
+          <PlusIcon size={31} weight="bold" color={colors.white} />
+        </Pressable>
+      ) : null}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  header: { alignItems: "center", backgroundColor: DAYMARK_COLORS.canvas, flexDirection: "row", justifyContent: "space-between", paddingBottom: DAYMARK_SPACING.md, paddingHorizontal: DAYMARK_SPACING.lg },
-  headerTitle: { ...DAYMARK_TYPE.sectionTitle, color: DAYMARK_COLORS.text },
-  iconButton: { alignItems: "center", height: 40, justifyContent: "center", width: 40 },
-  bottomNav: { backgroundColor: DAYMARK_COLORS.surface, borderTopColor: DAYMARK_COLORS.border, borderTopWidth: 1, flexDirection: "row", justifyContent: "space-around", paddingBottom: 8, paddingTop: 10 },
-  navItem: { alignItems: "center", gap: 3, minHeight: 44, minWidth: 64 },
-  navLabel: { ...DAYMARK_TYPE.small, color: DAYMARK_COLORS.textMuted, fontSize: 11 },
-  navLabelActive: { color: DAYMARK_COLORS.black, fontWeight: "600" },
-});
+function makeStyles(colors: ReturnType<typeof useDaymarkColors>) {
+  return StyleSheet.create({
+  header: { alignItems: "center", backgroundColor: colors.canvas, flexDirection: "row", justifyContent: "space-between", paddingBottom: DAYMARK_SPACING.sm, paddingHorizontal: DAYMARK_SPACING.xl },
+  headerTitleSpacer: { flex: 1 },
+  floatingButton: { alignItems: "center", backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.round, elevation: 2, height: 44, justifyContent: "center", shadowColor: colors.black, shadowOffset: { height: 4, width: 0 }, shadowOpacity: 0.07, shadowRadius: 12, width: 44 },
+  bottomNav: { backgroundColor: colors.canvas, paddingHorizontal: DAYMARK_SPACING.xl, paddingTop: 20, position: "relative" },
+  tabBarPill: { alignItems: "center", backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.round, elevation: 3, flexDirection: "row", height: 68, paddingHorizontal: DAYMARK_SPACING.sm, shadowColor: colors.black, shadowOffset: { height: 5, width: 0 }, shadowOpacity: 0.08, shadowRadius: 16 },
+  tabGroup: { alignItems: "center", flex: 1, flexDirection: "row", justifyContent: "space-around" },
+  navItem: { alignItems: "center", height: 52, justifyContent: "center", width: 52 },
+  fab: { alignItems: "center", backgroundColor: colors.black, borderRadius: DAYMARK_RADII.round, elevation: 5, height: 68, justifyContent: "center", position: "absolute", right: 36, shadowColor: colors.black, shadowOffset: { height: 5, width: 0 }, shadowOpacity: 0.16, shadowRadius: 10, top: -60, width: 68 },
+  });
+}

@@ -15,7 +15,6 @@
   "dependencies": {
     "@better-auth/expo": "catalog:",
     "@expo/metro-runtime": "~57.0.12",
-    "@expo/vector-icons": "^15.1.1",
     "@fullstack-expo-app-template/api": "workspace:*",
     "@fullstack-expo-app-template/env": "workspace:*",
     "@gorhom/bottom-sheet": "^5.2.14",
@@ -41,6 +40,7 @@
     "expo-task-manager": "~57.0.15",
     "expo-web-browser": "~57.0.2",
     "heroui-native": "^1.0.8",
+    "phosphor-react-native": "^3.0.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.2",

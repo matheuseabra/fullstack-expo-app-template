@@ -22,7 +22,6 @@
       "dependencies": {
         "@better-auth/expo": "catalog:",
         "@expo/metro-runtime": "~57.0.12",
-        "@expo/vector-icons": "^15.1.1",
         "@fullstack-expo-app-template/api": "workspace:*",
         "@fullstack-expo-app-template/env": "workspace:*",
         "@gorhom/bottom-sheet": "^5.2.14",
@@ -48,6 +47,7 @@
         "expo-task-manager": "~57.0.15",
         "expo-web-browser": "~57.0.2",
         "heroui-native": "^1.0.8",
+        "phosphor-react-native": "^3.0.6",
         "react": "19.2.3",
         "react-dom": "19.2.3",
         "react-native": "0.86.2",
@@ -101,9 +101,9 @@
       "version": "0.0.0",
       "dependencies": {
         "@fullstack-expo-app-template/ui": "workspace:*",
+        "@phosphor-icons/react": "^2.1.10",
         "@tailwindcss/vite": "^4.3.3",
         "@tanstack/react-router": "^1.170.18",
-        "lucide-react": "catalog:",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
       },
@@ -539,8 +539,6 @@
 
     "@expo/ui": ["@expo/ui@57.0.15", "https://registry.npmmirror.com/@expo/ui/-/ui-57.0.15.tgz", { "dependencies": { "sf-symbols-typescript": "^2.1.0", "vaul": "^1.1.2" }, "peerDependencies": { "@babel/core": "*", "expo": "*", "react": "*", "react-dom": "*", "react-native": "*", "react-native-worklets": "*" }, "optionalPeers": ["@babel/core", "react-dom", "react-native-worklets"] }, "sha512-qNntEAbDEq0VGkAUMaopIZLJEZofQMDJNjx8YBngqeG3oZJKjpQFOSI8ui951NbN8nABzJ5Jd55SXdZKYWslDw=="],
 
-    "@expo/vector-icons": ["@expo/vector-icons@15.1.1", "https://registry.npmmirror.com/@expo/vector-icons/-/vector-icons-15.1.1.tgz", { "peerDependencies": { "expo-font": ">=14.0.4", "react": "*", "react-native": "*" } }, "sha512-Iu2VkcoI5vygbtYngm7jb4ifxElNVXQYdDrYkT7UCEIiKLeWnQY0wf2ZhHZ+Wro6Sc5TaumpKUOqDRpLi5rkvw=="],
-
     "@expo/ws-tunnel": ["@expo/ws-tunnel@2.0.0", "https://registry.npmmirror.com/@expo/ws-tunnel/-/ws-tunnel-2.0.0.tgz", { "peerDependencies": { "ws": "^8.0.0" } }, "sha512-j+JfTRdCk820J9dU0sA2SqshQIKFOMo7ED84w9MJFcebfbNQgsLztEY/SABDkGnjatrW4xGqnUhVRxSBVyCkXw=="],
 
     "@expo/xcpretty": ["@expo/xcpretty@4.4.4", "https://registry.npmmirror.com/@expo/xcpretty/-/xcpretty-4.4.4.tgz", { "dependencies": { "@babel/code-frame": "^7.20.0", "chalk": "^4.1.0", "js-yaml": "^4.1.0" }, "bin": { "excpretty": "build/cli.js" } }, "sha512-4aQzz9vgxcNXFfo/iyNgDDYfsU5XGKKxWxZopw0cVotHiW+U8IJbIxMaxsINs6bHhtkG3StKNPcOrn3eBuxKPw=="],
@@ -664,6 +662,8 @@
     "@orpc/zod": ["@orpc/zod@1.15.0", "https://registry.npmmirror.com/@orpc/zod/-/zod-1.15.0.tgz", { "dependencies": { "@orpc/json-schema": "1.15.0", "@orpc/openapi": "1.15.0", "@orpc/shared": "1.15.0", "escape-string-regexp": "^5.0.0", "wildcard-match": "^5.1.4" }, "peerDependencies": { "@orpc/contract": "1.15.0", "@orpc/server": "1.15.0", "zod": ">=3.25.0" } }, "sha512-QaxvUaxemoz57ljE6GNoRHy6tUrLz9PZH+NjPtbL2SilTwrtTDPgWzS+D8TYW6VZqhdBJM6jY93j81ygVf88dQ=="],
 
     "@oxc-project/types": ["@oxc-project/types@0.147.0", "https://registry.npmmirror.com/@oxc-project/types/-/types-0.147.0.tgz", {}, "sha512-IJ3s6ltHLp45S0bh7phkX+gJO7A1Wuz2EaqpAhb8WjqDwbzMiWKHhyyT42tskaWjEYXtHtVCPpnBJVT9+dcRLg=="],
+
+    "@phosphor-icons/react": ["@phosphor-icons/react@2.1.10", "https://registry.npmmirror.com/@phosphor-icons/react/-/react-2.1.10.tgz", { "peerDependencies": { "react": ">= 16.8", "react-dom": ">= 16.8" } }, "sha512-vt8Tvq8GLjheAZZYa+YG/pW7HDbov8El/MANW8pOAz4eGxrwhnbfrQZq0Cp4q8zBEu8NIhHdnr+r8thnfRSNYA=="],
 
     "@quansync/fs": ["@quansync/fs@1.0.0", "https://registry.npmmirror.com/@quansync/fs/-/fs-1.0.0.tgz", { "dependencies": { "quansync": "^1.0.0" } }, "sha512-4TJ3DFtlf1L5LDMaM6CanJ/0lckGNtJcMjQ1NAV6zDmA0tEHKZtxNKin8EgPaVX1YzljbxckyT2tJrpQKAtngQ=="],
 
@@ -1231,7 +1231,7 @@
 
     "expo-asset": ["expo-asset@57.0.16", "https://registry.npmmirror.com/expo-asset/-/expo-asset-57.0.16.tgz", { "dependencies": { "@expo/image-utils": "^0.11.5", "expo-constants": "~57.0.17" }, "peerDependencies": { "expo": "*", "react": "*", "react-native": "*" } }, "sha512-IBRfQdW3iFT+GOBERMZLZM1MUNyrjMgMskuD0elVZ1ae44858UFlTJkHO3f8vi+u5zuv7O7KofsiN8NMG/uWzw=="],
 
-    "expo-background-task": ["expo-background-task@57.0.15", "", { "dependencies": { "expo-task-manager": "~57.0.15" }, "peerDependencies": { "expo": "*" } }, "sha512-UGcOudk/UGVyRslbuWWROUKHiAmQceorYTuxno1PfqN99rX/6FG/enWLJg34oixhPCrnJWQJ7oaRbO7624/UMw=="],
+    "expo-background-task": ["expo-background-task@57.0.15", "https://registry.npmmirror.com/expo-background-task/-/expo-background-task-57.0.15.tgz", { "dependencies": { "expo-task-manager": "~57.0.15" }, "peerDependencies": { "expo": "*" } }, "sha512-UGcOudk/UGVyRslbuWWROUKHiAmQceorYTuxno1PfqN99rX/6FG/enWLJg34oixhPCrnJWQJ7oaRbO7624/UMw=="],
 
     "expo-constants": ["expo-constants@57.0.17", "https://registry.npmmirror.com/expo-constants/-/expo-constants-57.0.17.tgz", { "dependencies": { "@expo/env": "~2.4.3" }, "peerDependencies": { "expo": "*", "react-native": "*" } }, "sha512-cPWYBKN1SEbg2lXg2f8VkePJqGZrJPLvVdQDCTfbFu9sQHO1M31Y1zILReUuGnmt/VKeUz40ze579vR00xGu/A=="],
 
@@ -1271,7 +1271,7 @@
 
     "expo-system-ui": ["expo-system-ui@57.0.3", "https://registry.npmmirror.com/expo-system-ui/-/expo-system-ui-57.0.3.tgz", { "dependencies": { "@react-native/normalize-colors": "0.86.3", "debug": "^4.3.2" }, "peerDependencies": { "expo": "*", "react-native": "*", "react-native-web": "*" }, "optionalPeers": ["react-native-web"] }, "sha512-3N3BoagGojEvQw0h7kL0Lvv2LrVjqEvODSNS+Nc9lj/kzaTaVx4K1HI8qqxeALMf5jui3rLP2b3Ai2pXotoNuA=="],
 
-    "expo-task-manager": ["expo-task-manager@57.0.15", "", { "dependencies": { "unimodules-app-loader": "~57.0.1" }, "peerDependencies": { "expo": "*", "react-native": "*" } }, "sha512-DiptpeQhPxiR18EV9IiQLY0JZKpKJiE8cZYaNhsCDfqijzal0r+qGETpK4Zw6vtscLdiXEAmLTd+0KS/WM3ENA=="],
+    "expo-task-manager": ["expo-task-manager@57.0.15", "https://registry.npmmirror.com/expo-task-manager/-/expo-task-manager-57.0.15.tgz", { "dependencies": { "unimodules-app-loader": "~57.0.1" }, "peerDependencies": { "expo": "*", "react-native": "*" } }, "sha512-DiptpeQhPxiR18EV9IiQLY0JZKpKJiE8cZYaNhsCDfqijzal0r+qGETpK4Zw6vtscLdiXEAmLTd+0KS/WM3ENA=="],
 
     "expo-web-browser": ["expo-web-browser@57.0.2", "https://registry.npmmirror.com/expo-web-browser/-/expo-web-browser-57.0.2.tgz", { "peerDependencies": { "expo": "*", "react-native": "*" } }, "sha512-3vl5kvd7PB48ub6PpNIJUuPxO8xVa6D8RnIgNba6SXRwqFprOfeEZgwTgtm41kz0AAtvMOztUVNEUkwrHKjqMQ=="],
 
@@ -1681,6 +1681,8 @@
 
     "pathe": ["pathe@2.0.3", "https://registry.npmmirror.com/pathe/-/pathe-2.0.3.tgz", {}, "sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w=="],
 
+    "phosphor-react-native": ["phosphor-react-native@3.0.6", "https://registry.npmmirror.com/phosphor-react-native/-/phosphor-react-native-3.0.6.tgz", { "peerDependencies": { "react": "*", "react-native": "*", "react-native-svg": "*" } }, "sha512-mIhv+hBbDWz3yLbTOq/esVUkrMoKzEvLIcSeZo3YTdT+sbOBxzxKg5WZN3wpqt3pkkhKf0wVpOyZ3d9mNBNRhg=="],
+
     "picocolors": ["picocolors@1.1.1", "https://registry.npmmirror.com/picocolors/-/picocolors-1.1.1.tgz", {}, "sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA=="],
 
     "picomatch": ["picomatch@4.0.7", "https://registry.npmmirror.com/picomatch/-/picomatch-4.0.7.tgz", {}, "sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA=="],
@@ -2007,7 +2009,7 @@
 
     "unicorn-magic": ["unicorn-magic@0.3.0", "https://registry.npmmirror.com/unicorn-magic/-/unicorn-magic-0.3.0.tgz", {}, "sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA=="],
 
-    "unimodules-app-loader": ["unimodules-app-loader@57.0.1", "", {}, "sha512-wey5ChoJkCTq0j0JWdIMu2QB81vVrdhmrNAP14ZZ6WDslnZ7ff7Ezv8rMdEnVHaCKz3xK4mIVXbVU51xHgdyCA=="],
+    "unimodules-app-loader": ["unimodules-app-loader@57.0.1", "https://registry.npmmirror.com/unimodules-app-loader/-/unimodules-app-loader-57.0.1.tgz", {}, "sha512-wey5ChoJkCTq0j0JWdIMu2QB81vVrdhmrNAP14ZZ6WDslnZ7ff7Ezv8rMdEnVHaCKz3xK4mIVXbVU51xHgdyCA=="],
 
     "universalify": ["universalify@2.0.1", "https://registry.npmmirror.com/universalify/-/universalify-2.0.1.tgz", {}, "sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw=="],
 
