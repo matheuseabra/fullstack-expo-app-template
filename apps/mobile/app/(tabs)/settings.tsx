@@ -8,15 +8,15 @@ import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { hapticWarning } from "@/utils/haptics";
 
-const settings: Array<{ label: string; value: string; Icon: Icon }> = [
-  { label: "Notifications", value: "A quiet nudge when it helps", Icon: BellIcon },
-  { label: "Week starts on", value: "Monday", Icon: CalendarBlankIcon },
-  { label: "Appearance", value: "System", Icon: SunIcon },
+const settings: Array<{ label: string; Icon: Icon }> = [
+  { label: "Notifications", Icon: BellIcon },
+  { label: "Week starts on", Icon: CalendarBlankIcon },
+  { label: "Appearance", Icon: SunIcon },
 ];
 
-const legalLinks: Array<{ label: string; value: string; url: string; Icon: Icon }> = [
-  { label: "Terms of Service", value: "Read the terms", url: process.env.EXPO_PUBLIC_TERMS_URL ?? "https://daymark.app/terms", Icon: FileTextIcon },
-  { label: "Privacy Policy", value: "How Daymark handles data", url: process.env.EXPO_PUBLIC_PRIVACY_URL ?? "https://daymark.app/privacy", Icon: ShieldCheckIcon },
+const legalLinks: Array<{ label: string; url: string; Icon: Icon }> = [
+  { label: "Terms of Service", url: process.env.EXPO_PUBLIC_TERMS_URL ?? "https://daymark.app/terms", Icon: FileTextIcon },
+  { label: "Privacy Policy", url: process.env.EXPO_PUBLIC_PRIVACY_URL ?? "https://daymark.app/privacy", Icon: ShieldCheckIcon },
 ];
 
 export default function SettingsScreen() {
@@ -44,37 +44,34 @@ export default function SettingsScreen() {
         </View>
         <Text style={styles.sectionLabel}>Preferences</Text>
         <View style={styles.list}>
-          {settings.map(({ label, value, Icon }, index) => (
+          {settings.map(({ label, Icon }, index) => (
             <Pressable key={label} style={[styles.row, index === settings.length - 1 && styles.rowLast]} accessibilityRole="button">
               <Icon size={22} weight="regular" color={colors.text} />
               <View style={styles.rowCopy}>
                 <Text style={styles.rowLabel}>{label}</Text>
-                <Text style={styles.rowValue}>{value}</Text>
               </View>
               <CaretRightIcon size={18} weight="bold" color={colors.textMuted} />
             </Pressable>
           ))}
         </View>
-        <Text style={styles.sectionLabel}>Legal</Text>
+        <Text style={[styles.sectionLabel, styles.sectionLabelSpaced]}>Legal</Text>
         <View style={styles.list}>
-          {legalLinks.map(({ label, value, url, Icon }, index) => (
+          {legalLinks.map(({ label, url, Icon }, index) => (
             <Pressable key={label} style={[styles.row, index === legalLinks.length - 1 && styles.rowLast]} onPress={() => handleOpenLink(url)} accessibilityRole="link" accessibilityLabel={label} accessibilityHint="Opens in your browser">
               <Icon size={22} weight="regular" color={colors.text} />
               <View style={styles.rowCopy}>
                 <Text style={styles.rowLabel}>{label}</Text>
-                <Text style={styles.rowValue}>{value}</Text>
               </View>
               <ArrowSquareOutIcon size={18} weight="bold" color={colors.textMuted} />
             </Pressable>
           ))}
         </View>
-        <Text style={styles.sectionLabel}>Developer</Text>
+        <Text style={[styles.sectionLabel, styles.sectionLabelSpaced]}>Developer</Text>
         <View style={styles.list}>
           <Pressable style={[styles.row, styles.rowLast]} onPress={handleResetOnboarding} accessibilityRole="button" accessibilityLabel="Reset onboarding">
             <CodeIcon size={22} weight="regular" color={colors.text} />
             <View style={styles.rowCopy}>
               <Text style={styles.rowLabel}>Reset onboarding</Text>
-              <Text style={styles.rowValue}>Show the intro again</Text>
             </View>
             <CaretRightIcon size={18} weight="bold" color={colors.textMuted} />
           </Pressable>
@@ -92,11 +89,11 @@ function makeStyles(colors: DaymarkColors) {
   pageTitle: { ...DAYMARK_TYPE.pageTitle, color: colors.text },
   subtitle: { ...DAYMARK_TYPE.body, color: colors.textMuted, marginTop: DAYMARK_SPACING.sm },
   sectionLabel: { ...DAYMARK_TYPE.small, color: colors.textMuted, fontWeight: "600", letterSpacing: 0.5, marginBottom: DAYMARK_SPACING.sm, textTransform: "uppercase" },
+  sectionLabelSpaced: { marginTop: DAYMARK_SPACING.xl },
   list: { backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.surface, elevation: 2, paddingHorizontal: DAYMARK_SPACING.lg, shadowColor: colors.black, shadowOffset: { height: 3, width: 0 }, shadowOpacity: 0.06, shadowRadius: 12 },
   row: { alignItems: "center", borderBottomColor: colors.border, borderBottomWidth: 1, flexDirection: "row", gap: DAYMARK_SPACING.md, minHeight: 68 },
   rowLast: { borderBottomWidth: 0 },
-  rowCopy: { flex: 1, gap: DAYMARK_SPACING.xs },
+  rowCopy: { flex: 1 },
   rowLabel: { ...DAYMARK_TYPE.body, color: colors.text, fontWeight: "600" },
-  rowValue: { ...DAYMARK_TYPE.small, color: colors.textMuted },
   });
 }

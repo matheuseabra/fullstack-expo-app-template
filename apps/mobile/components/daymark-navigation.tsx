@@ -75,7 +75,7 @@ function TabButton({ route, index, props }: { route: TabRoute; index: number; pr
       onPress={handlePress}
       style={styles.navItem}
     >
-      <TabIcon size={22} weight={isFocused ? "fill" : "regular"} color={isFocused ? colors.black : colors.textMuted} />
+      <TabIcon size={22} weight={isFocused ? "fill" : "bold"} color={isFocused ? colors.black : colors.textMuted} />
     </Pressable>
   );
 }
@@ -106,7 +106,7 @@ export function DaymarkTabBar(props: TabBarProps) {
           onPress={() => { hapticMedium(); props.navigation.navigate("todos", { focus: "1" }); }}
           style={styles.fab}
         >
-          <PlusIcon size={31} weight="bold" color={colors.white} />
+          <PlusIcon size={26} weight="bold" color={colors.white} />
         </Pressable>
       ) : null}
     </View>
@@ -118,10 +118,10 @@ function makeStyles(colors: ReturnType<typeof useDaymarkColors>) {
   header: { alignItems: "center", backgroundColor: colors.canvas, flexDirection: "row", justifyContent: "space-between", paddingBottom: DAYMARK_SPACING.sm, paddingHorizontal: DAYMARK_SPACING.xl },
   headerTitleSpacer: { flex: 1 },
   floatingButton: { alignItems: "center", backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.round, elevation: 2, height: 44, justifyContent: "center", shadowColor: colors.black, shadowOffset: { height: 4, width: 0 }, shadowOpacity: 0.07, shadowRadius: 12, width: 44 },
-  bottomNav: { backgroundColor: colors.canvas, paddingHorizontal: DAYMARK_SPACING.xl, paddingTop: 20, position: "relative" },
-  tabBarPill: { alignItems: "center", backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.round, elevation: 3, flexDirection: "row", height: 68, paddingHorizontal: DAYMARK_SPACING.sm, shadowColor: colors.black, shadowOffset: { height: 5, width: 0 }, shadowOpacity: 0.08, shadowRadius: 16 },
+  bottomNav: { backgroundColor: colors.canvas, paddingHorizontal: DAYMARK_SPACING.xl, paddingTop: 4, position: "relative" },
+  tabBarPill: { alignItems: "center", backgroundColor: "transparent", flexDirection: "row", height: 52, paddingHorizontal: 0 },
   tabGroup: { alignItems: "center", flex: 1, flexDirection: "row", justifyContent: "space-around" },
-  navItem: { alignItems: "center", height: 52, justifyContent: "center", width: 52 },
-  fab: { alignItems: "center", backgroundColor: colors.black, borderRadius: DAYMARK_RADII.round, elevation: 5, height: 68, justifyContent: "center", position: "absolute", right: 36, shadowColor: colors.black, shadowOffset: { height: 5, width: 0 }, shadowOpacity: 0.16, shadowRadius: 10, top: -60, width: 68 },
+  navItem: { alignItems: "center", height: 48, justifyContent: "center", width: 48 },
+  fab: { alignItems: "center", backgroundColor: colors.black, borderRadius: DAYMARK_RADII.round, elevation: 4, height: 48, justifyContent: "center", position: "absolute", right: 32, shadowColor: colors.black, shadowOffset: { height: 4, width: 0 }, shadowOpacity: 0.14, shadowRadius: 8, top: -50, width: 48 },
   });
 }

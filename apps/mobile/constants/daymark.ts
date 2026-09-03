@@ -1,7 +1,7 @@
 export const DAYMARK_COLORS = {
   canvas: "#FFFFFF",
   surface: "#FFFFFF",
-  surfaceMuted: "#F5F5F6",
+  surfaceMuted: "#F1F1F2",
   border: "#E8E8EA",
   borderStrong: "#111111",
   text: "#0A0A0A",
@@ -28,6 +28,8 @@ export const DAYMARK_DARK_COLORS = {
 
 export type DaymarkColors = { [Key in keyof typeof DAYMARK_COLORS]: string };
 
+export const DAYMARK_FONT_FAMILY = Platform.select({ ios: "System", android: "sans-serif", default: "System" }) ?? "System";
+
 export const DAYMARK_SPACING = {
   xs: 4,
   sm: 8,
@@ -44,9 +46,10 @@ export const DAYMARK_RADII = {
 } as const;
 
 export const DAYMARK_TYPE = {
-  pageTitle: { fontSize: 36, lineHeight: 43, fontWeight: "600" as const },
-  sectionTitle: { fontSize: 17, lineHeight: 23, fontWeight: "600" as const },
-  body: { fontSize: 16, lineHeight: 22, fontWeight: "400" as const },
-  small: { fontSize: 12, lineHeight: 17, fontWeight: "400" as const },
-  label: { fontSize: 12, lineHeight: 16, fontWeight: "600" as const },
+  pageTitle: { fontFamily: DAYMARK_FONT_FAMILY, fontSize: 36, lineHeight: 43, fontWeight: "600" as const },
+  sectionTitle: { fontFamily: DAYMARK_FONT_FAMILY, fontSize: 17, lineHeight: 23, fontWeight: "600" as const },
+  body: { fontFamily: DAYMARK_FONT_FAMILY, fontSize: 16, lineHeight: 22, fontWeight: "400" as const },
+  small: { fontFamily: DAYMARK_FONT_FAMILY, fontSize: 12, lineHeight: 17, fontWeight: "400" as const },
+  label: { fontFamily: DAYMARK_FONT_FAMILY, fontSize: 12, lineHeight: 16, fontWeight: "600" as const },
 };
+import { Platform } from "react-native";
