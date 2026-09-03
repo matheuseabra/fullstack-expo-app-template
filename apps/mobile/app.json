@@ -4,9 +4,9 @@
     "slug": "fullstack-expo-app-template",
     "version": "1.0.0",
     "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
     "icon": "./assets/images/icon.png",
     "scheme": "fullstack-expo-app-template",
-    "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.fullstack-expo-app-template"
@@ -34,11 +34,12 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "imageWidth": 180,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#FFFFFF",
           "dark": {
-            "backgroundColor": "#000000"
+            "image": "./assets/images/splash-icon-dark.png",
+            "backgroundColor": "#0A0A0B"
           }
         }
       ]

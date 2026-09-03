@@ -1,5 +1,5 @@
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, Circle } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, CalendarBlank, Check, Circle, List, DotsThree, Plus, MagnifyingGlass } from "@phosphor-icons/react";
+import type { Icon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 
 type Feature = {
@@ -7,7 +7,7 @@ type Feature = {
   label: string;
   title: string;
   description: string;
-  Icon: LucideIcon;
+  Icon: Icon;
 };
 
 const features: Feature[] = [
@@ -49,7 +49,7 @@ function HomeComponent() {
     <main className="marketing-page">
       <header className="marketing-header">
         <a className="brand" href="#top" aria-label="Daymark home">
-          <span className="brand-mark" aria-hidden="true"><span /><span /></span>
+          <picture><source srcSet="/daymark-icon-dark.png" media="(prefers-color-scheme: dark)" /><img className="brand-icon" src="/daymark-icon.png" alt="" aria-hidden="true" /></picture>
           <span>daymark</span>
         </a>
         <nav className="desktop-nav" aria-label="Primary navigation">
@@ -58,7 +58,7 @@ function HomeComponent() {
           <a href="#download">Get started</a>
         </nav>
         <a className="header-link" href="#download">
-          Open the app <ArrowUpRight size={15} strokeWidth={1.8} aria-hidden="true" />
+          Open the app <ArrowUpRight size={16} weight="bold" aria-hidden="true" />
         </a>
       </header>
 
@@ -72,10 +72,10 @@ function HomeComponent() {
           </p>
           <div className="hero-actions">
             <a className="button button-dark" href="#workflow">
-              See how it works <ArrowRight size={16} aria-hidden="true" />
+              See how it works <ArrowRight size={17} weight="bold" aria-hidden="true" />
             </a>
             <a className="text-link" href="#principles">
-              Explore the approach <ArrowDown size={15} aria-hidden="true" />
+              Explore the approach <ArrowDown size={16} weight="bold" aria-hidden="true" />
             </a>
           </div>
           <div className="hero-note"><span className="status-dot" aria-hidden="true" />Less noise. More follow-through.</div>
@@ -88,21 +88,25 @@ function HomeComponent() {
             <div className="phone-speaker" aria-hidden="true" />
             <div className="phone-screen">
               <div className="phone-status"><span>9:41</span><span className="phone-signal">•••</span></div>
-              <div className="phone-topline"><span className="mini-mark" aria-hidden="true" /><span>Tuesday, 15 October</span></div>
-              <p className="phone-greeting">Good morning, Matheus.</p>
-              <div className="phone-progress-heading"><span>Today</span><span>1 of 3 done</span></div>
-              <div className="phone-progress-track"><span /></div>
+              <div className="phone-toolbar"><span className="phone-circle-control"><ArrowLeft size={13} weight="bold" /></span><span className="phone-circle-control"><DotsThree size={14} weight="bold" /></span></div>
+              <h2 className="phone-title">Inbox</h2>
               <div className="phone-tasks">
                 {previewTasks.map((task) => (
                   <div className="phone-task" key={task.text}>
                     <span className={`task-check${task.done ? " is-done" : ""}`}>
-                      {task.done ? <Check size={12} strokeWidth={2.4} /> : null}
+                      {task.done ? <span className="task-check-inner" /> : null}
                     </span>
                     <span className={task.done ? "task-done" : ""}>{task.text}</span>
                   </div>
                 ))}
               </div>
-              <div className="phone-add-task">+ Add a task</div>
+              <div className="phone-fab"><Plus size={18} weight="bold" /></div>
+              <div className="phone-bottom-nav">
+                <Circle size={15} weight="regular" aria-hidden="true" />
+                <CalendarBlank size={15} weight="regular" aria-hidden="true" />
+                <MagnifyingGlass size={15} weight="bold" aria-hidden="true" />
+                <List size={16} weight="bold" aria-hidden="true" />
+              </div>
             </div>
             <div className="phone-home-indicator" aria-hidden="true" />
           </div>
@@ -122,7 +126,7 @@ function HomeComponent() {
         <div className="feature-grid">
           {features.map(({ number, label, title, description, Icon }) => (
             <article className="feature-card" key={number}>
-              <div className="feature-card-top"><span>{number}</span><Icon size={18} strokeWidth={1.5} aria-hidden="true" /></div>
+              <div className="feature-card-top"><span>{number}</span><Icon size={19} weight="regular" aria-hidden="true" /></div>
               <p className="feature-label">{label}</p>
               <h3>{title}</h3>
               <p>{description}</p>
@@ -136,7 +140,7 @@ function HomeComponent() {
           <p className="eyebrow">A simple rhythm</p>
           <h2>Capture less. Complete more.</h2>
           <p>Daymark keeps the loop short: put something down, give it a place, and return to the work that deserves your attention.</p>
-          <a className="text-link" href="#download">Start with a clearer list <ArrowRight size={15} aria-hidden="true" /></a>
+          <a className="text-link" href="#download">Start with a clearer list <ArrowRight size={16} weight="bold" aria-hidden="true" /></a>
         </div>
         <ol className="workflow-list">
           <li><span className="workflow-number">01</span><div><h3>Notice the next thing</h3><p>Turn the open loop in your head into one clear line.</p></div></li>
@@ -148,12 +152,12 @@ function HomeComponent() {
       <section className="download-section section-shell" id="download">
         <div className="download-panel">
           <div><p className="eyebrow eyebrow-inverse">Ready when you are</p><h2>Your next clear day starts here.</h2></div>
-          <a className="button button-light" href="#top">Explore Daymark <ArrowUpRight size={16} aria-hidden="true" /></a>
+          <a className="button button-light" href="#top">Explore Daymark <ArrowUpRight size={17} weight="bold" aria-hidden="true" /></a>
         </div>
       </section>
 
       <footer className="marketing-footer section-shell">
-        <a className="brand" href="#top" aria-label="Daymark home"><span className="brand-mark" aria-hidden="true"><span /><span /></span><span>daymark</span></a>
+        <a className="brand" href="#top" aria-label="Daymark home"><picture><source srcSet="/daymark-icon-dark.png" media="(prefers-color-scheme: dark)" /><img className="brand-icon" src="/daymark-icon.png" alt="" aria-hidden="true" /></picture><span>daymark</span></a>
         <span>Made for a little more clarity.</span><span>© 2026</span>
       </footer>
     </main>
