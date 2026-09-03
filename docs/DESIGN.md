@@ -43,7 +43,7 @@ These tokens define the light theme. Use semantic names in code so the palette c
 | --- | --- | --- |
 | `canvas` | `#FFFFFF` | App/page background |
 | `surface` | `#FFFFFF` | Cards, panels, inputs |
-| `surface-muted` | `#F1F1F2` | Inputs and quiet grouping surfaces |
+| `surface-muted` | `#EEEEEF` | Inputs and quiet grouping surfaces |
 | `border` | `#E8E8EA` | Very light dividers only |
 | `border-strong` | `#111111` | Open checkbox and focused borders |
 | `text` | `#0A0A0A` | Primary content |
