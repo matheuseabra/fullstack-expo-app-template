@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { CaretLeftIcon } from "phosphor-react-native";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useColorScheme } from "react-native";
 import { useRouter } from "expo-router";
@@ -43,23 +42,9 @@ export default function OnboardingScreen() {
     });
   };
 
-  const handleBack = () => {
-    if (stepIndex > 0) {
-      hapticSelection();
-      setStepIndex((current) => current - 1);
-    }
-  };
-
   return (
     <Container isScrollable={false} style={styles.container}>
       <View style={[styles.content, { paddingTop: insets.top + DAYMARK_SPACING.xxl }]}>
-        <View style={styles.topBar}>
-          {stepIndex > 0 ? (
-            <Pressable onPress={handleBack} style={styles.backButton} accessibilityRole="button" accessibilityLabel="Previous onboarding step">
-              <CaretLeftIcon size={24} weight="bold" color={colors.text} />
-            </Pressable>
-          ) : null}
-        </View>
         <Animated.View key={step.title} entering={FadeIn.duration(220)} exiting={FadeOut.duration(140)} style={styles.copy}>
           {stepIndex === 0 ? <Image source={colorScheme === "dark" ? darkIcon : icon} style={styles.icon} /> : null}
           <Text style={styles.title}>{step.title}</Text>
@@ -82,7 +67,6 @@ function makeStyles(colors: DaymarkColors) {
   return StyleSheet.create({
   container: { backgroundColor: colors.canvas },
   content: { flex: 1, paddingHorizontal: DAYMARK_SPACING.xl, paddingBottom: DAYMARK_SPACING.xxl },
-  topBar: { height: 44, justifyContent: "flex-start" },
   copy: { alignItems: "center", flex: 1, justifyContent: "center", maxWidth: 330, width: "100%" },
   icon: { height: 64, marginBottom: DAYMARK_SPACING.xl, width: 64 },
   title: { ...DAYMARK_TYPE.pageTitle, color: colors.text, fontSize: 34, lineHeight: 40, textAlign: "center" },
@@ -91,7 +75,6 @@ function makeStyles(colors: DaymarkColors) {
   progressDot: { backgroundColor: colors.borderStrong, borderRadius: DAYMARK_RADII.round, height: 6, width: 6 },
   progressDotActive: { backgroundColor: colors.black, width: 24 },
   footer: { width: "100%" },
-  backButton: { alignItems: "center", backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.round, elevation: 2, height: 44, justifyContent: "center", shadowColor: colors.black, shadowOffset: { height: 4, width: 0 }, shadowOpacity: 0.07, shadowRadius: 12, width: 44 },
   button: { alignItems: "center", backgroundColor: colors.black, borderRadius: DAYMARK_RADII.round, height: 56, justifyContent: "center", width: "100%" },
   buttonText: { color: colors.white, fontFamily: DAYMARK_FONT_FAMILY, fontSize: 16, fontWeight: "600", lineHeight: 20 },
   });

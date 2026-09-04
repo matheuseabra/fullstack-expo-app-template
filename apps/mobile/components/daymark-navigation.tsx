@@ -1,26 +1,27 @@
-import { ArrowLeftIcon, CalendarBlankIcon, CheckSquareIcon, CircleIcon, DotsThreeIcon, GearIcon, ListIcon, PlusIcon, type Icon } from "phosphor-react-native";
+import { ArrowLeftIcon, CalendarBlankIcon, CircleIcon, DotsThreeIcon, GearIcon, HouseIcon, MagnifyingGlassIcon, PlusIcon, type Icon } from "phosphor-react-native";
 import { Tabs, useRouter } from "expo-router";
 import { type ComponentProps } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { DAYMARK_RADII, DAYMARK_SPACING } from "@/constants/daymark";
 import { useDaymarkColors } from "@/hooks/use-daymark-theme";
+import { useAddTaskSheetStore } from "@/stores/add-task-sheet-store";
 import { hapticLight, hapticMedium, hapticSelection } from "@/utils/haptics";
 
 type TabBarProps = NonNullable<ComponentProps<typeof Tabs>["tabBar"]> extends (props: infer Props) => unknown ? Props : never;
 type TabRoute = TabBarProps["state"]["routes"][number];
 
 const tabIcons: Record<string, Icon> = {
-  index: CheckSquareIcon,
+  index: HouseIcon,
   week: CalendarBlankIcon,
-  todos: ListIcon,
+  search: MagnifyingGlassIcon,
   settings: GearIcon,
 };
 
 const tabLabels: Record<string, string> = {
   index: "Today",
   week: "Week",
-  todos: "Tasks",
+  search: "Search",
   settings: "Settings",
 };
 
@@ -87,7 +88,8 @@ export function DaymarkTabBar(props: TabBarProps) {
   const leftTabs = props.state.routes.slice(0, 2);
   const rightTabs = props.state.routes.slice(2);
   const activeRouteName = props.state.routes[props.state.index]?.name;
-  const showFab = activeRouteName === "index" || activeRouteName === "todos";
+  const showFab = activeRouteName === "index" || activeRouteName === "search";
+  const openAddTaskSheet = useAddTaskSheetStore((state) => state.open);
 
   return (
     <View style={[styles.bottomNav, { paddingBottom: insets.bottom + DAYMARK_SPACING.md }]}>
@@ -103,10 +105,10 @@ export function DaymarkTabBar(props: TabBarProps) {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Add task"
-          onPress={() => { hapticMedium(); props.navigation.navigate("todos", { focus: "1" }); }}
+          onPress={() => { hapticMedium(); openAddTaskSheet(); }}
           style={styles.fab}
         >
-          <PlusIcon size={26} weight="bold" color={colors.white} />
+          <PlusIcon size={28} weight="bold" color={colors.white} />
         </Pressable>
       ) : null}
     </View>
@@ -122,6 +124,6 @@ function makeStyles(colors: ReturnType<typeof useDaymarkColors>) {
   tabBarPill: { alignItems: "center", backgroundColor: "transparent", flexDirection: "row", height: 52, paddingHorizontal: 0 },
   tabGroup: { alignItems: "center", flex: 1, flexDirection: "row", justifyContent: "space-around" },
   navItem: { alignItems: "center", height: 48, justifyContent: "center", width: 48 },
-  fab: { alignItems: "center", backgroundColor: colors.black, borderRadius: DAYMARK_RADII.round, elevation: 4, height: 48, justifyContent: "center", position: "absolute", right: 32, shadowColor: colors.black, shadowOffset: { height: 4, width: 0 }, shadowOpacity: 0.14, shadowRadius: 8, top: -50, width: 48 },
+  fab: { alignItems: "center", backgroundColor: colors.black, borderRadius: DAYMARK_RADII.round, elevation: 4, height: 52, justifyContent: "center", position: "absolute", right: 30, shadowColor: colors.black, shadowOffset: { height: 4, width: 0 }, shadowOpacity: 0.14, shadowRadius: 8, top: -54, width: 52 },
   });
 }

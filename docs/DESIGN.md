@@ -43,7 +43,7 @@ These tokens define the light theme. Use semantic names in code so the palette c
 | --- | --- | --- |
 | `canvas` | `#FFFFFF` | App/page background |
 | `surface` | `#FFFFFF` | Cards, panels, inputs |
-| `surface-muted` | `#F1F1F2` | Inputs and quiet grouping surfaces |
+| `surface-muted` | `#EEEEEF` | Inputs and quiet grouping surfaces |
 | `border` | `#E8E8EA` | Very light dividers only |
 | `border-strong` | `#111111` | Open checkbox and focused borders |
 | `text` | `#0A0A0A` | Primary content |
@@ -67,12 +67,13 @@ Semantic feedback colors should be muted and paired with text or icons; they are
 - **Icons:** the native app uses `phosphor-react-native`; the marketing site uses `@phosphor-icons/react`. Keep icons one step smaller than surrounding text, with 21–23px navigation/header icons, filled active tab variants, and a slightly heavier weight for primary actions.
 - **Floating controls:** white circular back and overflow buttons, 44px square, with a soft shadow and black line icons.
 - **Buttons:** black fill for the primary action, white or pale-grey surfaces for secondary controls, and text-only for tertiary actions.
-- **Inputs:** pale-grey rounded field with black text and no heavy outline; the submit affordance is a small black circle.
-- **Task rows:** calm rows with a 28–30px open circular checkbox, 2px black stroke, regular black text, and no card outline. Completed tasks use a black outer control with a small white center and muted grey text.
-- **Navigation:** use four Expo Router bottom tabs inside one wide white rounded pill. Inactive icons are muted grey; the active icon is black. On task-oriented screens, float a single 68px black add-task FAB above the pill at the lower right.
+- **Inputs:** pale-grey rounded field with black text and no heavy outline; the add-task FAB opens a small bottom sheet with a rounded check action beside the field.
+- **Task rows:** calm rows with a 28–30px open circular checkbox, 2px black stroke, regular black text, and no card outline. Completing a task removes its row with a short fade-and-collapse animation.
+- **Navigation:** use four Expo Router bottom tabs for Today, Week, Search, and Settings. Inactive icons are muted grey; the active icon is black. On Today and Search, float a compact black add-task FAB above the navigation.
+- **Week:** default to a seven-day calendar view with a selectable day and an optional list view for progress by day.
 - **Settings:** use generous grouped white controls with soft shadows, pale dividers, and right-aligned values/icons.
 - **Legal links:** Terms of Service and Privacy Policy belong in a grouped Legal section and open in the system browser.
-- **Onboarding:** a quiet three-step introduction uses the same canvas, centered copy and progress dots, a 64px Daymark icon above the first headline, larger centered headlines, a top-left circular chevron for Back, a full-width Continue action, and a bold “Get started” final action.
+- **Onboarding:** a quiet three-step introduction uses the same canvas, centered copy and progress dots, a 64px Daymark icon above the first headline, larger centered headlines, a full-width Continue action, and a bold “Get started” final action.
 - **Color mode:** native and web surfaces follow the operating-system appearance by default. Light mode uses a white canvas and black ink; dark mode inverts the same hierarchy with a near-black canvas, soft-white ink, and restrained gray surfaces. The light and dark Daymark marks preserve the same geometry.
 - **Splash:** use the light or dark Daymark app icon centered on the matching canvas background with no additional artwork or copy.
 - **Loading:** use neutral skeletons or inline progress text; avoid flashing layout changes.

@@ -40,13 +40,12 @@ export default function SettingsScreen() {
       <View style={styles.content}>
         <View style={styles.heading}>
           <Text style={styles.pageTitle}>Settings</Text>
-          <Text style={styles.subtitle}>Make Daymark fit the way you work.</Text>
         </View>
         <Text style={styles.sectionLabel}>Preferences</Text>
         <View style={styles.list}>
           {settings.map(({ label, Icon }, index) => (
             <Pressable key={label} style={[styles.row, index === settings.length - 1 && styles.rowLast]} accessibilityRole="button">
-              <Icon size={22} weight="regular" color={colors.text} />
+              <Icon size={22} weight="bold" color={colors.text} />
               <View style={styles.rowCopy}>
                 <Text style={styles.rowLabel}>{label}</Text>
               </View>
@@ -58,7 +57,7 @@ export default function SettingsScreen() {
         <View style={styles.list}>
           {legalLinks.map(({ label, url, Icon }, index) => (
             <Pressable key={label} style={[styles.row, index === legalLinks.length - 1 && styles.rowLast]} onPress={() => handleOpenLink(url)} accessibilityRole="link" accessibilityLabel={label} accessibilityHint="Opens in your browser">
-              <Icon size={22} weight="regular" color={colors.text} />
+              <Icon size={22} weight="bold" color={colors.text} />
               <View style={styles.rowCopy}>
                 <Text style={styles.rowLabel}>{label}</Text>
               </View>
@@ -69,7 +68,7 @@ export default function SettingsScreen() {
         <Text style={[styles.sectionLabel, styles.sectionLabelSpaced]}>Developer</Text>
         <View style={styles.list}>
           <Pressable style={[styles.row, styles.rowLast]} onPress={handleResetOnboarding} accessibilityRole="button" accessibilityLabel="Reset onboarding">
-            <CodeIcon size={22} weight="regular" color={colors.text} />
+            <CodeIcon size={22} weight="bold" color={colors.text} />
             <View style={styles.rowCopy}>
               <Text style={styles.rowLabel}>Reset onboarding</Text>
             </View>
@@ -87,11 +86,10 @@ function makeStyles(colors: DaymarkColors) {
   content: { paddingHorizontal: DAYMARK_SPACING.xl, paddingBottom: DAYMARK_SPACING.xl },
   heading: { marginBottom: DAYMARK_SPACING.xxl, marginTop: DAYMARK_SPACING.xxl },
   pageTitle: { ...DAYMARK_TYPE.pageTitle, color: colors.text },
-  subtitle: { ...DAYMARK_TYPE.body, color: colors.textMuted, marginTop: DAYMARK_SPACING.sm },
-  sectionLabel: { ...DAYMARK_TYPE.small, color: colors.textMuted, fontWeight: "600", letterSpacing: 0.5, marginBottom: DAYMARK_SPACING.sm, textTransform: "uppercase" },
+  sectionLabel: { ...DAYMARK_TYPE.small, color: colors.textMuted, fontWeight: "400", letterSpacing: 0, marginBottom: DAYMARK_SPACING.sm },
   sectionLabelSpaced: { marginTop: DAYMARK_SPACING.xl },
   list: { backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.surface, elevation: 2, paddingHorizontal: DAYMARK_SPACING.lg, shadowColor: colors.black, shadowOffset: { height: 3, width: 0 }, shadowOpacity: 0.06, shadowRadius: 12 },
-  row: { alignItems: "center", borderBottomColor: colors.border, borderBottomWidth: 1, flexDirection: "row", gap: DAYMARK_SPACING.md, minHeight: 68 },
+  row: { alignItems: "center", borderBottomColor: colors.border, borderBottomWidth: 1, flexDirection: "row", gap: DAYMARK_SPACING.md, minHeight: 56 },
   rowLast: { borderBottomWidth: 0 },
   rowCopy: { flex: 1 },
   rowLabel: { ...DAYMARK_TYPE.body, color: colors.text, fontWeight: "600" },
