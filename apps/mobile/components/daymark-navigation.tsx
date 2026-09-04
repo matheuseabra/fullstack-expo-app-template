@@ -1,10 +1,11 @@
-import { ArrowLeftIcon, CalendarBlankIcon, CircleIcon, DotsThreeIcon, GearIcon, HouseIcon, ListIcon, PlusIcon, type Icon } from "phosphor-react-native";
+import { ArrowLeftIcon, CalendarBlankIcon, CircleIcon, DotsThreeIcon, GearIcon, HouseIcon, MagnifyingGlassIcon, PlusIcon, type Icon } from "phosphor-react-native";
 import { Tabs, useRouter } from "expo-router";
 import { type ComponentProps } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { DAYMARK_RADII, DAYMARK_SPACING } from "@/constants/daymark";
 import { useDaymarkColors } from "@/hooks/use-daymark-theme";
+import { useAddTaskSheetStore } from "@/stores/add-task-sheet-store";
 import { hapticLight, hapticMedium, hapticSelection } from "@/utils/haptics";
 
 type TabBarProps = NonNullable<ComponentProps<typeof Tabs>["tabBar"]> extends (props: infer Props) => unknown ? Props : never;
@@ -13,14 +14,14 @@ type TabRoute = TabBarProps["state"]["routes"][number];
 const tabIcons: Record<string, Icon> = {
   index: HouseIcon,
   week: CalendarBlankIcon,
-  todos: ListIcon,
+  search: MagnifyingGlassIcon,
   settings: GearIcon,
 };
 
 const tabLabels: Record<string, string> = {
   index: "Today",
   week: "Week",
-  todos: "Tasks",
+  search: "Search",
   settings: "Settings",
 };
 
@@ -87,7 +88,8 @@ export function DaymarkTabBar(props: TabBarProps) {
   const leftTabs = props.state.routes.slice(0, 2);
   const rightTabs = props.state.routes.slice(2);
   const activeRouteName = props.state.routes[props.state.index]?.name;
-  const showFab = activeRouteName === "index" || activeRouteName === "todos";
+  const showFab = activeRouteName === "index" || activeRouteName === "search";
+  const openAddTaskSheet = useAddTaskSheetStore((state) => state.open);
 
   return (
     <View style={[styles.bottomNav, { paddingBottom: insets.bottom + DAYMARK_SPACING.md }]}>
@@ -103,7 +105,7 @@ export function DaymarkTabBar(props: TabBarProps) {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Add task"
-          onPress={() => { hapticMedium(); props.navigation.navigate("todos", { focus: "1" }); }}
+          onPress={() => { hapticMedium(); openAddTaskSheet(); }}
           style={styles.fab}
         >
           <PlusIcon size={28} weight="bold" color={colors.white} />
