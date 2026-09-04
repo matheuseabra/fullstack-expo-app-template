@@ -1,3 +1,4 @@
+import Animated, { FadeOut, LinearTransition } from "react-native-reanimated";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Container } from "@/components/container";
@@ -12,12 +13,14 @@ function TaskRow({ task, onToggle, disabled }: { task: { text: string; completed
   const styles = makeStyles(colors);
 
   return (
-    <Pressable disabled={disabled} style={styles.taskRow} onPress={() => { task.completed ? hapticSelection() : hapticSuccess(); onToggle(); }} accessibilityRole="checkbox" accessibilityState={{ checked: task.completed }}>
-      <View style={[styles.taskCheck, task.completed && styles.taskCheckDone]}>
-        {task.completed ? <View style={styles.taskCheckInner} /> : null}
-      </View>
-      <Text style={[styles.taskText, task.completed && styles.taskTextDone]}>{task.text}</Text>
-    </Pressable>
+    <Animated.View exiting={FadeOut.duration(180)} layout={LinearTransition.duration(180)}>
+      <Pressable disabled={disabled} style={styles.taskRow} onPress={() => { task.completed ? hapticSelection() : hapticSuccess(); onToggle(); }} accessibilityRole="checkbox" accessibilityState={{ checked: task.completed }}>
+        <View style={[styles.taskCheck, task.completed && styles.taskCheckDone]}>
+          {task.completed ? <View style={styles.taskCheckInner} /> : null}
+        </View>
+        <Text style={[styles.taskText, task.completed && styles.taskTextDone]}>{task.text}</Text>
+      </Pressable>
+    </Animated.View>
   );
 }
 
@@ -31,6 +34,7 @@ export default function Home() {
   const styles = makeStyles(colors);
   const { taskList, isLoading, isError, refetch, isPending, isMutationError, toggleTodo } = useTodos();
   const completedCount = taskList.filter((task) => task.completed).length;
+  const openTasks = taskList.filter((task) => !task.completed);
   const today = new Date();
 
   return (
@@ -52,11 +56,11 @@ export default function Home() {
               <Text style={styles.statusText}>We couldn’t load your tasks.</Text>
               <Pressable onPress={() => refetch()} accessibilityRole="button"><Text style={styles.retryText}>Try again</Text></Pressable>
             </View>
-          ) : taskList.length === 0 ? (
+          ) : openTasks.length === 0 ? (
             <View style={styles.statusState}><Text style={styles.statusText}>Your day is clear.</Text></View>
           ) : (
             <View style={styles.taskList}>
-              {taskList.map((task) => <TaskRow key={task.id} task={task} disabled={isPending} onToggle={() => { void toggleTodo(task.id, !task.completed).catch(() => undefined); }} />)}
+              {openTasks.map((task) => <TaskRow key={task.id} task={task} disabled={isPending} onToggle={() => { void toggleTodo(task.id, true).catch(() => undefined); }} />)}
             </View>
           )}
           {isMutationError ? <Text style={styles.errorText}>Couldn’t save that task. Try again.</Text> : null}
