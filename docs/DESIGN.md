@@ -14,26 +14,27 @@ Daymark is a quiet, white-canvas task companion. Its visual language follows the
 
 ## Typography
 
-Use the native clean sans-serif stack. On iOS this resolves to San Francisco; web uses the equivalent system fallbacks. Use only regular and semibold weights in normal UI:
+Use Inter as the primary sans family and a restrained serif only for optional editorial accents. The native app may use the system sans fallback until Inter is bundled as an app asset. Keep the family count to two and the weight count to three:
 
 ```css
-font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-  "Segoe UI", sans-serif;
+--font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+--font-serif: ui-serif, Georgia, serif; /* editorial accent only */
 font-weight: 400; /* regular: body, labels, controls */
-font-weight: 600; /* semibold: headings, emphasis, primary actions */
+font-weight: 500; /* medium: optional metadata emphasis */
+font-weight: 600; /* semibold: headings and primary actions */
 ```
 
-If Inter is unavailable, the system fallback is intentional. Avoid introducing display fonts or more than these two weights.
+Use 400 and 600 by default. Use 500 only when regular text lacks enough hierarchy. Do not add display faces, condensed faces, or additional weights.
 
 | Role | Size / line height | Weight |
 | --- | --- | --- |
 | Page title | 36 / 43px | 600 |
 | Section title | 17 / 23px | 600 |
 | Body / task | 16 / 22px | 400 |
-| Small / helper | 12 / 17px | 400 |
+| Small / helper | 12 / 17px | 400 or 500 |
 | Button and field label | 12 / 16px | 600 |
 
-The Inbox reference uses a large title and large, calm task rows. Titles are not decorative marketing type: they are the primary orientation cue on each screen. Keep the system sans stack and use only regular and semibold weights.
+The Inbox reference uses a large title and large, calm task rows. Titles are not decorative marketing type: they are the primary orientation cue on each screen. Keep Inter primary, reserve serif for editorial accents, and use only the three documented weights.
 
 ## Color tokens
 
@@ -56,9 +57,10 @@ Semantic feedback colors should be muted and paired with text or icons; they are
 
 ## Spacing and shape
 
-- Use a 4px base spacing unit: `4, 8, 12, 16, 24, 32, 40, 48`.
-- Use 44px circular icon controls and a 68px floating navigation pill.
-- Keep 24px horizontal screen gutters and generous vertical space around page titles.
+- Use an 8px base grid: `8, 16, 24, 32, 40, 48`.
+- Use strict 24px horizontal screen padding. Any new page or surface should start from that inset.
+- Use 24px corner radius for surfaces and rounded controls. Pills and circles remain fully round exceptions.
+- Use 44px circular icon controls and a compact floating add-task control.
 - Use shadows sparingly: black at roughly 6–8% opacity, 3–5px vertical offset, and 12–16px blur.
 - Use borders only for task checkboxes and quiet list dividers; do not outline every surface.
 
@@ -69,7 +71,7 @@ Semantic feedback colors should be muted and paired with text or icons; they are
 - **Buttons:** black fill for the primary action, white or pale-grey surfaces for secondary controls, and text-only for tertiary actions.
 - **Inputs:** pale-grey rounded field with black text and no heavy outline; the add-task FAB opens a small bottom sheet with a rounded check action beside the field.
 - **Task rows:** calm rows with a 28–30px open circular checkbox, 2px black stroke, regular black text, and no card outline. Completing a task removes its row with a short fade-and-collapse animation.
-- **Navigation:** use four Expo Router bottom tabs for Today, Week, Search, and Settings. Inactive icons are muted grey; the active icon is black. On Today and Search, float a compact black add-task FAB above the navigation.
+- **Navigation:** use four Expo Router bottom tabs for Today, Week, Search, and Settings. Keep page content at the strict 24px horizontal inset; use a compact 16px outer inset for the bottom navigation so icon optical edges do not feel cramped, with four equal hit-target columns. Inactive icons are muted grey; the active icon is black. On Today and Search, float a compact black add-task FAB above the navigation and align its trailing edge to the navigation inset.
 - **Week:** default to a seven-day calendar view with a selectable day and an optional list view for progress by day.
 - **Settings:** use generous grouped white controls with soft shadows, pale dividers, and right-aligned values/icons.
 - **Legal links:** Terms of Service and Privacy Policy belong in a grouped Legal section and open in the system browser.
@@ -87,7 +89,7 @@ The marketing site is the product’s visual preview, not a separate brand syste
 - Use the same white canvas, black primary controls, muted grey secondary text, and soft shadows.
 - Show a simple Inbox task list with circular completion controls, a floating add button, and a rounded bottom navigation pill inside the phone.
 - Keep the surrounding page calm and spacious, using pale grey only for preview framing or quiet grouping.
-- Use the same clean system sans stack and regular/semibold weight discipline. Marketing headings may be larger, but they should remain restrained and readable rather than decorative.
+- Use the same Inter-first sans stack, optional serif accent, and 400/500/600 weight discipline. Marketing headings may be larger, but they should remain restrained and readable rather than decorative.
 
 ## Implementation
 

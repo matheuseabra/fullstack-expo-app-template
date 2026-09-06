@@ -4,12 +4,12 @@ Daymark’s mobile app should feel like the product shown in the marketing hero:
 
 ## Look and feel
 
-- Light grey `#F7F7F7` is the canvas; white `#FFFFFF` is reserved for task surfaces and controls.
+- White `#FFFFFF` is the canvas; light grey `#EEEEEF` is reserved for task inputs and quiet grouping surfaces.
 - Use black `#000000` only for the primary action, active navigation state, and strong emphasis.
-- Use `#111111` for primary text, `#666666` for secondary text, and `#888888` for placeholders or supporting metadata.
-- Use 1px `#DEDEDE` rules to separate content. Add a soft, close shadow only when a surface needs lift.
-- Keep corners restrained: 6px for compact controls and 10px for larger surfaces. Avoid pill-shaped decoration except for circular task marks.
-- Use the system sans-serif with regular and semibold weights only. Headings are semibold; body copy and supporting labels are regular.
+- Use `#0A0A0A` for primary text, `#8A8A8F` for secondary text, and `#B0B0B5` for placeholders or supporting metadata.
+- Use 1px `#E8E8EA` rules to separate content. Add a soft, close shadow only when a surface needs lift.
+- Use a consistent 24px corner radius for surfaces and rounded controls. Fully round pills and circles are intentional exceptions.
+- Use Inter as the primary sans family, with a restrained serif accent only when needed. Use 400, 500, and 600 weights at most; headings are semibold and body copy is regular.
 
 ## Screen composition
 
@@ -18,18 +18,19 @@ The canonical screen is a 9:16 portrait layout with a safe-area-aware top bar, a
 1. Brand row: `daymark` wordmark at left and a quiet menu affordance at right.
 2. Context: `Today` title, date/greeting, and a short progress summary.
 3. Task list: 48–56px rows, outlined check circles, 1px dividers, and one completed state using a black filled circle.
-4. Primary action: full-width black `Add a task` control near the lower content edge.
-5. Navigation: four equal destinations—Today, Week, Tasks, Settings—with the active destination black and the others muted.
+4. Primary action: a compact black FAB opens a small bottom-sheet task composer.
+5. Navigation: four equal destinations—Today, Week, Search, Settings—with the active destination black and the others muted.
 
 ## Shared measurements
 
-- Base spacing unit: 4px; preferred values are 4, 8, 12, 16, 24, and 32.
+- Base spacing unit: 8px; preferred values are 8, 16, 24, 32, 40, and 48.
 - Page horizontal inset: 24px on standard phones.
-- Page title: 28/34px semibold.
-- Section title: 20/26px semibold.
-- Body: 15/22px regular.
-- Small/helper: 13/18px regular.
-- Button and field label: 14/20px semibold.
+- Surface and control radius: 24px; use fully round geometry for pills and circles.
+- Page title: 36/43px semibold.
+- Section title: 17/23px semibold.
+- Body: 16/22px regular.
+- Small/helper: 12/17px regular or medium.
+- Button and field label: 12/16px semibold.
 - Task row minimum height: 56px.
 - Touch targets: at least 44px, including icon buttons and bottom navigation.
 
@@ -37,4 +38,4 @@ The canonical screen is a 9:16 portrait layout with a safe-area-aware top bar, a
 
 Use `apps/mobile/constants/daymark.ts` as the source of truth for native colors, spacing, radii, and type sizes. Prefer explicit `StyleSheet` values for the product surfaces so the Simulator rendering stays aligned with the web hero. Uniwind remains available for utility composition, but product-critical layout should not depend on theme defaults from a component library.
 
-The product is intentionally light-only for this first cohesive pass. Do not introduce gradients, saturated accents, dark-mode-only variants, decorative illustrations, or unrelated card treatments without updating this document and the marketing hero together.
+The product follows the operating-system light/dark appearance using the same neutral hierarchy. Do not introduce gradients, saturated accents, decorative illustrations, or unrelated card treatments without updating this document and the marketing hero together.

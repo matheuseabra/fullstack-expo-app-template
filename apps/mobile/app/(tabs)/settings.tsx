@@ -83,7 +83,7 @@ export default function SettingsScreen() {
 function makeStyles(colors: DaymarkColors) {
   return StyleSheet.create({
   container: { backgroundColor: colors.canvas },
-  content: { paddingHorizontal: DAYMARK_SPACING.xl, paddingBottom: DAYMARK_SPACING.xl },
+  content: { paddingHorizontal: DAYMARK_SPACING.screen, paddingBottom: DAYMARK_SPACING.xl },
   heading: { marginBottom: DAYMARK_SPACING.xxl, marginTop: DAYMARK_SPACING.xxl },
   pageTitle: { ...DAYMARK_TYPE.pageTitle, color: colors.text },
   sectionLabel: { ...DAYMARK_TYPE.small, color: colors.textMuted, fontWeight: "400", letterSpacing: 0, marginBottom: DAYMARK_SPACING.sm },
