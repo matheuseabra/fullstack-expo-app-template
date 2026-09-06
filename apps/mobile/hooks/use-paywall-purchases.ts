@@ -1,18 +1,17 @@
-import {
-  finishTransaction as finishIapTransaction,
-  type MutationRequestPurchaseArgs,
-  type ProductSubscription,
-  type Purchase,
-  useIAP,
-} from "expo-iap";
-import { Platform, Alert } from "react-native";
+import { PURCHASES_ERROR_CODE } from "react-native-purchases";
+import type { CustomerInfo, PurchasesPackage, PurchasesStoreProduct } from "react-native-purchases";
+import { Alert, Platform } from "react-native";
 import { useEffect, useState } from "react";
-import { DAYMARK_PLUS_PRODUCT_ID } from "@/constants/purchases";
+import { DAYMARK_PLUS_ENTITLEMENT_ID } from "@/constants/purchases";
+import { Purchases, configureRevenueCat } from "@/lib/revenuecat";
 import { hapticLight, hapticMedium, hapticSuccess, hapticWarning } from "@/utils/haptics";
 
 export type PaywallPurchaseState = {
   connected: boolean;
-  subscription?: ProductSubscription;
+  subscription?: {
+    displayPrice: string;
+    productIdentifier: string;
+  };
   hasActiveSubscription: boolean;
   hasFreeTrial: boolean;
   isPurchasing: boolean;
@@ -26,70 +25,94 @@ function errorMessage(error: unknown, fallback: string) {
   return error instanceof Error ? error.message : fallback;
 }
 
-function isCancellation(message: string) {
+function isCancellation(error: unknown) {
+  if (
+    error &&
+    typeof error === "object" &&
+    "code" in error &&
+    (error as { code?: unknown }).code === PURCHASES_ERROR_CODE.PURCHASE_CANCELLED_ERROR
+  ) {
+    return true;
+  }
+  const message = error instanceof Error ? error.message : String(error);
   return /cancel|dismiss|closed/i.test(message);
 }
 
-function purchaseRequest(subscription: ProductSubscription): MutationRequestPurchaseArgs | null {
-  if (Platform.OS === "ios") {
-    return { type: "subs", request: { apple: { sku: DAYMARK_PLUS_PRODUCT_ID } } };
-  }
-  if (Platform.OS !== "android") return null;
+function entitlementIsActive(customerInfo: CustomerInfo) {
+  return customerInfo.entitlements.active[DAYMARK_PLUS_ENTITLEMENT_ID] !== undefined;
+}
 
-  const offerToken = subscription.subscriptionOffers?.find((offer) => offer.offerTokenAndroid)?.offerTokenAndroid;
-  return {
-    type: "subs",
-    request: {
-      google: {
-        skus: [DAYMARK_PLUS_PRODUCT_ID],
-        subscriptionOffers: offerToken ? [{ sku: DAYMARK_PLUS_PRODUCT_ID, offerToken }] : null,
-      },
-    },
-  };
+function hasFreeTrialFor(product: PurchasesStoreProduct | null | undefined) {
+  return product?.introPrice !== null && product?.introPrice !== undefined;
+}
+
+function displayPrice(product: PurchasesStoreProduct) {
+  const period = product.subscriptionPeriod;
+  const price = product.priceString;
+  if (!period) return price;
+  const match = /^P(?:(\d+)D|(\d+)W|(\d+)M|(\d+)Y)$/.exec(period);
+  if (!match) return price;
+  const [, days, weeks, months, years] = match;
+  if (months === "1") return `${price}/month`;
+  if (years === "1") return `${price}/year`;
+  if (months) return `${price}/${months} months`;
+  if (weeks === "1") return `${price}/week`;
+  if (weeks) return `${price}/${weeks} weeks`;
+  if (days) return `${price}/${days} days`;
+  return price;
 }
 
 export function usePaywallPurchases(onPurchaseComplete: () => void): PaywallPurchaseState {
+  const [connected, setConnected] = useState(false);
+  const [monthlyPackage, setMonthlyPackage] = useState<PurchasesPackage | null>(null);
+  const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
+  const [hasFreeTrial, setHasFreeTrial] = useState(false);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
-  const [hasPlus, setHasPlus] = useState(false);
   const [purchaseError, setPurchaseError] = useState<string | null>(null);
 
-  const handlePurchaseSuccess = (purchase: Purchase) => {
-    if (purchase.productId !== DAYMARK_PLUS_PRODUCT_ID) return;
-    void finishIapTransaction({ purchase, isConsumable: false })
-      .then(() => {
-        setHasPlus(true);
-        setIsPurchasing(false);
-        hapticSuccess();
-        Alert.alert("Daymark Plus is active", "Your subscription is ready. Enjoy a clearer day.", [{ text: "Continue to Daymark", onPress: onPurchaseComplete }]);
-      })
-      .catch((error: unknown) => {
-        setIsPurchasing(false);
-        setPurchaseError(errorMessage(error, "We couldn't finish your purchase. Please try again."));
-        hapticWarning();
-      });
-  };
-
-  const { connected, subscriptions, activeSubscriptions, fetchProducts, getActiveSubscriptions, hasActiveSubscriptions, requestPurchase, restorePurchases } = useIAP({
-    onPurchaseSuccess: handlePurchaseSuccess,
-    onPurchaseError: (error) => {
-      setIsPurchasing(false);
-      if (isCancellation(error.message)) return;
-      setPurchaseError(error.message);
-      hapticWarning();
-    },
-    onError: (error) => setPurchaseError(error.message),
-  });
-
-  const subscription = subscriptions.find((product) => product.id === DAYMARK_PLUS_PRODUCT_ID);
-  const hasActiveSubscription = hasPlus || activeSubscriptions.some((purchase) => purchase.productId === DAYMARK_PLUS_PRODUCT_ID && purchase.isActive);
-  const hasFreeTrial = subscription?.platform === "ios" && subscription.introductoryPricePaymentModeIOS === "free-trial";
-
   useEffect(() => {
-    if (!connected) return;
-    void fetchProducts({ skus: [DAYMARK_PLUS_PRODUCT_ID], type: "subs" }).catch(() => undefined);
-    void getActiveSubscriptions([DAYMARK_PLUS_PRODUCT_ID]).catch(() => undefined);
-  }, [connected, fetchProducts, getActiveSubscriptions]);
+    if (Platform.OS !== "ios" && Platform.OS !== "android") return;
+    let cancelled = false;
+
+    async function setup() {
+      try {
+        configureRevenueCat();
+        const [offerings, customerInfo] = await Promise.all([Purchases.getOfferings(), Purchases.getCustomerInfo()]);
+        if (cancelled) return;
+
+        const pkg = offerings.current?.monthly ?? offerings.current?.availablePackages[0] ?? null;
+        setMonthlyPackage(pkg);
+        setHasFreeTrial(hasFreeTrialFor(pkg?.product));
+        setHasActiveSubscription(entitlementIsActive(customerInfo));
+        setConnected(true);
+      } catch (error: unknown) {
+        if (cancelled) return;
+        setConnected(false);
+        setPurchaseError(errorMessage(error, "We couldn't connect to the store. Please try again."));
+        hapticWarning();
+      }
+    }
+
+    void setup();
+
+    const listener = (customerInfo: CustomerInfo) => {
+      setHasActiveSubscription(entitlementIsActive(customerInfo));
+    };
+    Purchases.addCustomerInfoUpdateListener(listener);
+
+    return () => {
+      cancelled = true;
+      Purchases.removeCustomerInfoUpdateListener(listener);
+    };
+  }, []);
+
+  const subscription = monthlyPackage
+    ? {
+        displayPrice: displayPrice(monthlyPackage.product),
+        productIdentifier: monthlyPackage.product.identifier,
+      }
+    : undefined;
 
   const handlePurchase = async () => {
     hapticMedium();
@@ -97,27 +120,31 @@ export function usePaywallPurchases(onPurchaseComplete: () => void): PaywallPurc
       onPurchaseComplete();
       return;
     }
-    if (!connected) {
-      setPurchaseError("The App Store is not ready yet. Please try again in a moment.");
+    if (!monthlyPackage) {
+      setPurchaseError("Daymark Plus is unavailable until an offering is configured in RevenueCat.");
       return;
     }
-    if (!subscription) {
-      setPurchaseError(`Daymark Plus is unavailable until ${DAYMARK_PLUS_PRODUCT_ID} is configured in the store.`);
+    if (!connected) {
+      setPurchaseError("The store is not ready yet. Please try again in a moment.");
       return;
     }
 
-    const request = purchaseRequest(subscription);
-    if (!request) {
-      setPurchaseError("Purchases are only available in the iOS and Android apps.");
-      return;
-    }
     setPurchaseError(null);
     setIsPurchasing(true);
     try {
-      await requestPurchase(request);
+      const { customerInfo } = await Purchases.purchasePackage(monthlyPackage);
+      if (entitlementIsActive(customerInfo)) {
+        hapticSuccess();
+        Alert.alert("Daymark Plus is active", "Your subscription is ready. Enjoy a clearer day.", [
+          { text: "Continue to Daymark", onPress: onPurchaseComplete },
+        ]);
+      }
     } catch (error: unknown) {
-      setIsPurchasing(false);
+      if (isCancellation(error)) return;
       setPurchaseError(errorMessage(error, "We couldn't start the purchase. Please try again."));
+      hapticWarning();
+    } finally {
+      setIsPurchasing(false);
     }
   };
 
@@ -126,21 +153,33 @@ export function usePaywallPurchases(onPurchaseComplete: () => void): PaywallPurc
     setPurchaseError(null);
     setIsRestoring(true);
     try {
-      await restorePurchases();
-      await getActiveSubscriptions([DAYMARK_PLUS_PRODUCT_ID]);
-      if (await hasActiveSubscriptions([DAYMARK_PLUS_PRODUCT_ID])) {
-        setHasPlus(true);
+      const customerInfo = await Purchases.restorePurchases();
+      if (entitlementIsActive(customerInfo)) {
         hapticSuccess();
-        Alert.alert("Daymark Plus restored", "Your subscription is active on this device.", [{ text: "Continue to Daymark", onPress: onPurchaseComplete }]);
-        return;
+        Alert.alert("Daymark Plus restored", "Your subscription is active on this device.", [
+          { text: "Continue to Daymark", onPress: onPurchaseComplete },
+        ]);
+      } else {
+        setPurchaseError("No active Daymark Plus subscription was found.");
       }
-      setPurchaseError("No active Daymark Plus subscription was found.");
     } catch (error: unknown) {
+      if (isCancellation(error)) return;
       setPurchaseError(errorMessage(error, "We couldn't restore your purchase. Please try again."));
+      hapticWarning();
     } finally {
       setIsRestoring(false);
     }
   };
 
-  return { connected, subscription, hasActiveSubscription, hasFreeTrial, isPurchasing, isRestoring, purchaseError, handlePurchase, handleRestore };
+  return {
+    connected,
+    subscription,
+    hasActiveSubscription,
+    hasFreeTrial,
+    isPurchasing,
+    isRestoring,
+    purchaseError,
+    handlePurchase,
+    handleRestore,
+  };
 }

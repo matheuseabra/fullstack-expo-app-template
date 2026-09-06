@@ -10,6 +10,7 @@ import { auth } from "@fullstack-expo-app-template/auth";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { handleRevenueCatWebhook } from "./webhooks/revenuecat";
 
 const app = new Hono();
 
@@ -30,6 +31,8 @@ app.on(
 	(c) =>
 		auth.handler(c.req.raw)
 );
+
+app.post("/webhooks/revenuecat", (c) => handleRevenueCatWebhook(c));
 
 export const apiHandler = new OpenAPIHandler(appRouter, {
 	plugins: [

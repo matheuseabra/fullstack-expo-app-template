@@ -1,6 +1,6 @@
 import { CheckCircleIcon, XIcon } from "phosphor-react-native";
 import { useRouter } from "expo-router";
-import { useColorScheme, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useColorScheme, Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Container } from "@/components/container";
 import { DAYMARK_RADII, DAYMARK_SPACING, DAYMARK_TYPE, type DaymarkColors } from "@/constants/daymark";
@@ -60,9 +60,18 @@ export default function PaywallScreen() {
 
 type PaywallStyles = ReturnType<typeof makeStyles>;
 
+function storeName() {
+  return Platform.OS === "ios" ? "App Store" : Platform.OS === "android" ? "Google Play" : "store";
+}
+
 function PaywallOfferCard({ purchase, styles }: { purchase: PaywallPurchaseState; styles: PaywallStyles }) {
   const price = purchase.subscription?.displayPrice ?? (purchase.connected ? "Unavailable" : "Loading…");
-  const details = purchase.subscription ? `${purchase.subscription.displayPrice} through the App Store. Manage or cancel anytime in your Apple ID settings.` : "Connect to the App Store to load the current plan and price.";
+  const store = storeName();
+  const details = purchase.subscription
+    ? `${purchase.subscription.displayPrice} through the ${store}. Manage or cancel anytime in your store account settings.`
+    : purchase.connected
+      ? `Connect to the ${store} to load the current plan and price.`
+      : "Connecting to the store to load the current plan and price…";
 
   return (
     <View style={styles.offerCard}>
@@ -80,7 +89,7 @@ function PaywallPurchaseActions({ purchase, styles }: { purchase: PaywallPurchas
   const buttonText = purchase.hasActiveSubscription
     ? "Continue to Daymark"
     : purchase.isPurchasing
-      ? "Waiting for App Store…"
+      ? "Waiting for the store…"
       : purchase.hasFreeTrial
         ? "Start my free trial"
         : "Start Daymark Plus";
