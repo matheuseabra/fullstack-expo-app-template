@@ -13,13 +13,14 @@ Daymark’s mobile app should feel like the product shown in the marketing hero:
 
 ## Screen composition
 
-The canonical screen is a 9:16 portrait layout with a safe-area-aware top bar, a compact brand mark, a page title, one calm summary surface, and a list of task rows. The Today screen follows this order:
+The canonical screen is a 9:16 portrait layout with a safe-area-aware top bar, a compact page title, one calm summary surface, and a list of task rows. The Today screen follows this order:
 
-1. Brand row: `daymark` wordmark at left and a quiet menu affordance at right.
-2. Context: `Today` title, date/greeting, and a short progress summary.
-3. Task list: 48–56px rows, outlined check circles, 1px dividers, and one completed state using a black filled circle.
-4. Primary action: a compact black FAB opens a small bottom-sheet task composer.
-5. Navigation: four equal destinations—Today, Week, Search, Settings—with the active destination black and the others muted.
+1. Context: `Today` title, date/greeting, and a short progress summary.
+2. Task list: 48–56px rows, outlined check circles, 1px dividers, and one completed state using a black filled circle.
+3. Primary action: a compact black FAB opens a small bottom-sheet task composer.
+4. Navigation: four equal destinations—Today, Week, Search, Settings—with the active destination black and the others muted.
+
+Onboarding uses the same canvas with centered copy. Its first screen places the Daymark icon and name above the headline. After the three steps, a separate soft-paywall view presents the benefit bullets, a high-intent primary CTA, and a quiet Daymark Plus note marked “Coming soon”; its top-right close control leads to Today.
 
 ## Shared measurements
 

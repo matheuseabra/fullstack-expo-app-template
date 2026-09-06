@@ -38,7 +38,7 @@ export default function OnboardingScreen() {
     }
     void complete().then(() => {
       hapticSuccess();
-      router.replace("/(tabs)");
+      router.push("/paywall");
     });
   };
 
@@ -46,7 +46,12 @@ export default function OnboardingScreen() {
     <Container isScrollable={false} style={styles.container}>
       <View style={[styles.content, { paddingTop: insets.top + DAYMARK_SPACING.xxl }]}>
         <Animated.View key={step.title} entering={FadeIn.duration(220)} exiting={FadeOut.duration(140)} style={styles.copy}>
-          {stepIndex === 0 ? <Image source={colorScheme === "dark" ? darkIcon : icon} style={styles.icon} /> : null}
+          {stepIndex === 0 ? (
+            <View style={styles.brandLockup}>
+              <Image source={colorScheme === "dark" ? darkIcon : icon} style={styles.brandIcon} />
+              <Text style={styles.brandName}>daymark</Text>
+            </View>
+          ) : null}
           <Text style={styles.title}>{step.title}</Text>
           <Text style={styles.body}>{step.body}</Text>
         </Animated.View>
@@ -68,7 +73,9 @@ function makeStyles(colors: DaymarkColors) {
   container: { backgroundColor: colors.canvas },
   content: { flex: 1, paddingHorizontal: DAYMARK_SPACING.screen, paddingBottom: DAYMARK_SPACING.xxl },
   copy: { alignItems: "center", flex: 1, justifyContent: "center", maxWidth: 330, width: "100%" },
-  icon: { height: 64, marginBottom: DAYMARK_SPACING.xl, width: 64 },
+  brandLockup: { alignItems: "center", flexDirection: "row", marginBottom: DAYMARK_SPACING.xl },
+  brandIcon: { height: 40, marginRight: DAYMARK_SPACING.sm, width: 40 },
+  brandName: { ...DAYMARK_TYPE.sectionTitle, color: colors.text, fontSize: 18 },
   title: { ...DAYMARK_TYPE.pageTitle, color: colors.text, fontSize: 34, lineHeight: 40, textAlign: "center" },
   body: { ...DAYMARK_TYPE.body, color: colors.textMuted, marginTop: DAYMARK_SPACING.md, textAlign: "center" },
   progress: { alignSelf: "center", flexDirection: "row", gap: DAYMARK_SPACING.sm, marginBottom: DAYMARK_SPACING.lg },

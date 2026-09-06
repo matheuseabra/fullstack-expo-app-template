@@ -75,7 +75,7 @@ Semantic feedback colors should be muted and paired with text or icons; they are
 - **Week:** default to a seven-day calendar view with a selectable day and an optional list view for progress by day.
 - **Settings:** use generous grouped white controls with soft shadows, pale dividers, and right-aligned values/icons.
 - **Legal links:** Terms of Service and Privacy Policy belong in a grouped Legal section and open in the system browser.
-- **Onboarding:** a quiet three-step introduction uses the same canvas, centered copy and progress dots, a 64px Daymark icon above the first headline, larger centered headlines, a full-width Continue action, and a bold “Get started” final action.
+- **Onboarding:** a quiet three-step introduction uses the same canvas, centered copy and progress dots, a Daymark icon-and-name lockup above the first headline, larger centered headlines, a full-width Continue action, and a bold “Get started” final action. The final action opens a separate soft-paywall view with a high-intent primary CTA and a top-right close control that leads to Today.
 - **Color mode:** native and web surfaces follow the operating-system appearance by default. Light mode uses a white canvas and black ink; dark mode inverts the same hierarchy with a near-black canvas, soft-white ink, and restrained gray surfaces. The light and dark Daymark marks preserve the same geometry.
 - **Splash:** use the light or dark Daymark app icon centered on the matching canvas background with no additional artwork or copy.
 - **Loading:** use neutral skeletons or inline progress text; avoid flashing layout changes.

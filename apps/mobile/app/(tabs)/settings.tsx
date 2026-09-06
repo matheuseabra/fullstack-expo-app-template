@@ -92,6 +92,6 @@ function makeStyles(colors: DaymarkColors) {
   row: { alignItems: "center", borderBottomColor: colors.border, borderBottomWidth: 1, flexDirection: "row", gap: DAYMARK_SPACING.md, minHeight: 56 },
   rowLast: { borderBottomWidth: 0 },
   rowCopy: { flex: 1 },
-  rowLabel: { ...DAYMARK_TYPE.body, color: colors.text, fontWeight: "600" },
+  rowLabel: { ...DAYMARK_TYPE.body, color: colors.text, fontWeight: "500" },
   });
 }

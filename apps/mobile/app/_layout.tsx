@@ -31,6 +31,7 @@ function StackLayout() {
     <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.canvas } }}>
       <Stack.Screen name="(tabs)" options={{ animation: "fade", headerShown: false }} />
       <Stack.Screen name="onboarding" options={{ animation: "fade", headerShown: false }} />
+      <Stack.Screen name="paywall" options={{ animation: "slide_from_right", headerShown: false }} />
       <Stack.Screen name="modal" options={{ title: "Settings", presentation: "modal" }} />
     </Stack>
   );
@@ -52,7 +53,8 @@ function OnboardingGate() {
   useEffect(() => {
     if (!isReady) return;
     const isOnboarding = pathname.includes("onboarding");
-    if (!hasCompletedOnboarding && !isOnboarding) router.replace("/onboarding");
+    const isPaywall = pathname.includes("paywall");
+    if (!hasCompletedOnboarding && !isOnboarding && !isPaywall) router.replace("/onboarding");
     if (hasCompletedOnboarding && isOnboarding) router.replace("/(tabs)");
     void SplashScreen.hideAsync();
   }, [hasCompletedOnboarding, isReady, pathname, router]);
