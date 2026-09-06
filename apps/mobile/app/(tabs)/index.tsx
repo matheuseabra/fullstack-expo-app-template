@@ -2,7 +2,6 @@ import Animated, { FadeOut, LinearTransition } from "react-native-reanimated";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Container } from "@/components/container";
-import { OverflowButton } from "@/components/daymark-navigation";
 import { DAYMARK_RADII, DAYMARK_SPACING, DAYMARK_TYPE, type DaymarkColors } from "@/constants/daymark";
 import { useDaymarkColors } from "@/hooks/use-daymark-theme";
 import { useTodos } from "@/hooks/use-todos";
@@ -40,7 +39,6 @@ export default function Home() {
   return (
     <Container isScrollable={false} style={styles.container}>
       <ScrollView contentContainerStyle={[styles.content, { paddingTop: insets.top + DAYMARK_SPACING.sm }]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-        <View style={styles.topRow}><View /><OverflowButton /></View>
         <View style={styles.headingBlock}>
           <Text style={styles.pageTitle}>Today</Text>
           <Text style={styles.dateLine}>{formatToday(today)}</Text>
@@ -73,8 +71,7 @@ export default function Home() {
 function makeStyles(colors: DaymarkColors) {
   return StyleSheet.create({
   container: { backgroundColor: colors.canvas },
-  content: { paddingBottom: 160, paddingHorizontal: DAYMARK_SPACING.xl },
-  topRow: { alignItems: "center", flexDirection: "row", justifyContent: "space-between" },
+  content: { paddingBottom: 160, paddingHorizontal: DAYMARK_SPACING.screen },
   headingBlock: { marginBottom: DAYMARK_SPACING.xl, marginTop: DAYMARK_SPACING.xxl },
   pageTitle: { ...DAYMARK_TYPE.pageTitle, color: colors.text },
   dateLine: { ...DAYMARK_TYPE.small, color: colors.textMuted, marginTop: DAYMARK_SPACING.xs },

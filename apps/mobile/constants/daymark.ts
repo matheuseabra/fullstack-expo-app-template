@@ -31,17 +31,19 @@ export type DaymarkColors = { [Key in keyof typeof DAYMARK_COLORS]: string };
 export const DAYMARK_FONT_FAMILY = Platform.select({ ios: "System", android: "sans-serif", default: "System" }) ?? "System";
 
 export const DAYMARK_SPACING = {
-  xs: 4,
+  unit: 8,
+  xs: 8,
   sm: 8,
-  md: 12,
+  md: 16,
   lg: 16,
   xl: 24,
   xxl: 32,
+  screen: 24,
 } as const;
 
 export const DAYMARK_RADII = {
-  control: 16,
-  surface: 20,
+  control: 24,
+  surface: 24,
   round: 999,
 } as const;
 

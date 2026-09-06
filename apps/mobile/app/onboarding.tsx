@@ -66,7 +66,7 @@ export default function OnboardingScreen() {
 function makeStyles(colors: DaymarkColors) {
   return StyleSheet.create({
   container: { backgroundColor: colors.canvas },
-  content: { flex: 1, paddingHorizontal: DAYMARK_SPACING.xl, paddingBottom: DAYMARK_SPACING.xxl },
+  content: { flex: 1, paddingHorizontal: DAYMARK_SPACING.screen, paddingBottom: DAYMARK_SPACING.xxl },
   copy: { alignItems: "center", flex: 1, justifyContent: "center", maxWidth: 330, width: "100%" },
   icon: { height: 64, marginBottom: DAYMARK_SPACING.xl, width: 64 },
   title: { ...DAYMARK_TYPE.pageTitle, color: colors.text, fontSize: 34, lineHeight: 40, textAlign: "center" },

@@ -100,7 +100,7 @@ export default function WeekScreen() {
 function makeStyles(colors: DaymarkColors) {
   return StyleSheet.create({
     container: { backgroundColor: colors.canvas },
-    content: { paddingBottom: 160, paddingHorizontal: DAYMARK_SPACING.xl },
+    content: { paddingBottom: 160, paddingHorizontal: DAYMARK_SPACING.screen },
     heading: { marginBottom: DAYMARK_SPACING.lg, marginTop: DAYMARK_SPACING.xxl },
     pageTitle: { ...DAYMARK_TYPE.pageTitle, color: colors.text },
     subtitle: { ...DAYMARK_TYPE.small, color: colors.textMuted, marginTop: DAYMARK_SPACING.xs },

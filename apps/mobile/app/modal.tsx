@@ -52,7 +52,7 @@ export default function Modal() {
 function makeStyles(colors: DaymarkColors) {
   return StyleSheet.create({
   container: { backgroundColor: colors.canvas },
-  sheet: { flex: 1, paddingHorizontal: DAYMARK_SPACING.xl, paddingTop: DAYMARK_SPACING.lg },
+  sheet: { flex: 1, paddingHorizontal: DAYMARK_SPACING.screen, paddingTop: DAYMARK_SPACING.lg },
   sheetHeader: { alignItems: "center", flexDirection: "row", justifyContent: "space-between", minHeight: 44 },
   headerAction: { ...DAYMARK_TYPE.body, color: colors.text },
   headerTitle: { ...DAYMARK_TYPE.label, color: colors.text },
