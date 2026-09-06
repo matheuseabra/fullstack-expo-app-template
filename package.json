@@ -61,5 +61,8 @@
     "@types/bun": "catalog:",
     "@fullstack-expo-app-template/config": "workspace:*",
     "turbo": "^2.10.12"
+  },
+  "patchedDependencies": {
+    "expo-modules-jsi@57.0.8": "patches/expo-modules-jsi@57.0.8.patch"
   }
 }

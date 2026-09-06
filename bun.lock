@@ -36,6 +36,7 @@
         "expo-constants": "~57.0.13",
         "expo-font": "~57.0.1",
         "expo-haptics": "~57.0.1",
+        "expo-iap": "^5.5.0",
         "expo-linking": "~57.0.7",
         "expo-network": "~57.0.1",
         "expo-router": "~57.0.15",
@@ -215,6 +216,9 @@
         "typescript": "^6.0.3",
       },
     },
+  },
+  "patchedDependencies": {
+    "expo-modules-jsi@57.0.8": "patches/expo-modules-jsi@57.0.8.patch",
   },
   "catalog": {
     "@better-auth/expo": "1.7.1",
@@ -1243,6 +1247,8 @@
 
     "expo-haptics": ["expo-haptics@57.0.2", "https://registry.npmmirror.com/expo-haptics/-/expo-haptics-57.0.2.tgz", { "peerDependencies": { "expo": "*" } }, "sha512-vPths6zTxxaGaemC7D1GKbw1iOnOAAL5oAcCFVSgVNWnuLCBefL1LkhRBaJsepiMXRh2y3vwPiXkPaf6d16blA=="],
 
+    "expo-iap": ["expo-iap@5.5.0", "https://registry.npmmirror.com/expo-iap/-/expo-iap-5.5.0.tgz", { "peerDependencies": { "@amazon-devices/keplerscript-appstore-iap-lib": "~2.13.0", "@amazon-devices/package-manager-lib": "~1.0.1767254401", "expo": "*", "react": "*", "react-native": "*" }, "optionalPeers": ["@amazon-devices/keplerscript-appstore-iap-lib", "@amazon-devices/package-manager-lib"] }, "sha512-tgNdvkAsgeXnMbPnLaPBV3OEOJfVbdBxud0J2vduY89rfmwGwUGlXZYr1ssAWSm+jCH+/c1Qdcvg/byaH51M0w=="],
+
     "expo-keep-awake": ["expo-keep-awake@57.0.1", "https://registry.npmmirror.com/expo-keep-awake/-/expo-keep-awake-57.0.1.tgz", { "peerDependencies": { "expo": "*", "react": "*" } }, "sha512-28lkFImeXTS+bhAjuCFV7w7tW5bXg27BJVrxv+nC/nyYa86qEa0oFeHwqol6ha5k4pdVDQgBF09GM4A1k76Ssg=="],
 
     "expo-linking": ["expo-linking@57.0.9", "https://registry.npmmirror.com/expo-linking/-/expo-linking-57.0.9.tgz", { "dependencies": { "expo-constants": "~57.0.17", "invariant": "^2.2.4" }, "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-TQJe3NsnpZXApBg1n6DKaZ4TNhYm+iYWq7W9rTp+G44IBMZSUcI8ba+ffYC/LMY1qw+95AuBPIF1zTx1NQoTXw=="],
@@ -1251,7 +1257,7 @@
 
     "expo-modules-core": ["expo-modules-core@57.0.15", "https://registry.npmmirror.com/expo-modules-core/-/expo-modules-core-57.0.15.tgz", { "dependencies": { "@expo/expo-modules-macros-plugin": "0.6.1", "expo-modules-jsi": "~57.0.7", "invariant": "^2.2.4" }, "peerDependencies": { "react": "*", "react-native": "*", "react-native-worklets": "^0.7.4 || ^0.8.0 || ^0.9.0 || ^0.10.0" }, "optionalPeers": ["react-native-worklets"] }, "sha512-HBxPXsx3eVLLRjAY57/8ghKDWIxjaEbluKKYFIq1OHPJC85ZfHsawwc0SOU4Z/qu+mdLz7Pwt5IkkWimeNSH5A=="],
 
-    "expo-modules-jsi": ["expo-modules-jsi@57.0.7", "https://registry.npmmirror.com/expo-modules-jsi/-/expo-modules-jsi-57.0.7.tgz", { "peerDependencies": { "react-native": "*" } }, "sha512-/GOrTFPnCfg7+m6M1yOSEKNeNdHBCm0ju6aJ4XHlSmtE02nb7mWh1Cs6QsK2eB5Rz7hjbb356Nd7UimsFvN7Vg=="],
+    "expo-modules-jsi": ["expo-modules-jsi@57.0.8", "https://registry.npmmirror.com/expo-modules-jsi/-/expo-modules-jsi-57.0.8.tgz", { "peerDependencies": { "react-native": "*" } }, "sha512-MFwvKP0FXLkEET27KsKvOh/L7Dpu2d00UgzAlmKozJgtI23WTKSyKPxu+EOSs9peSgkHzKI0vQOhWjOseGBMkQ=="],
 
     "expo-network": ["expo-network@57.0.1", "https://registry.npmmirror.com/expo-network/-/expo-network-57.0.1.tgz", { "peerDependencies": { "expo": "*", "react": "*" } }, "sha512-ndg+FbDDlz6XTpQ6aVuVgyvrYQwMkpcUAvZIXbwrGBbLTSWNzYC/gawYu1BAeDN7O6JTGY98GBVJBov/JH7LgQ=="],
 
