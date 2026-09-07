@@ -44,9 +44,9 @@ Dependencies and abstractions enter for a concrete use within these boundaries.
 
 ## Monetization preserves access to existing work
 
-A dismissible onboarding paywall is compatible with a subscription limit on new task creation.
-Requiring Plus beyond twenty tasks is an acceptable paid boundary, while existing tasks remain readable.
-A creation limit applies locally during offline use and reconciles entitlement changes later.
+A dismissible onboarding paywall is compatible with a future subscription limit on new task creation.
+The current example records RevenueCat entitlement state and exposes it to signed-in clients, but it does not enforce a task limit or gate another premium feature.
+If a creation limit is introduced, it must apply locally during offline use and reconcile entitlement changes later.
 A paywall screen alone is not evidence that purchases or entitlement enforcement work.
 A visible flow is described as working only when its actions reach the state or persistence they claim to change.
 Verification distinguishes observed behavior from presentational controls and platform limitations.

@@ -1,13 +1,16 @@
 # Mobile functionality
 
-The mobile app is a client of the Hono/oRPC API. Task records are stored in the LibSQL database configured by `apps/server/.env`; the mobile app does not keep a second task store.
+The mobile app is an offline-first client of the Hono/oRPC API. Its task screens read from the on-device SQLite database first; the sync layer later pushes queued operations to the server database configured by `apps/server/.env`.
 
 ## Working end to end
 
-- Today loads tasks from `todo.getAll`, calculates progress from returned records, creates tasks through `todo.create`, and toggles completion through `todo.toggle`.
-- Tasks loads the same records and supports create, toggle, delete, loading states, and retry states.
-- Week loads the same records and calculates the current Monday–Sunday summary from each task’s server-generated `createdAt` timestamp.
-- The shared `apps/mobile/hooks/use-todos.ts` keeps Today and Tasks on the same query and mutation behavior.
+- Today reads local tasks, shows open tasks, calculates progress, and lets the user complete a task.
+- Search reads the same local task list, filters open tasks by text, and lets the user complete a result.
+- Week reads the same local task list and calculates a Monday–Sunday summary from each task’s local or server-provided `createdAt` timestamp. It supports calendar and list views.
+- The add-task sheet writes a new task locally first. `apps/mobile/stores/todo-store.ts` refreshes the UI immediately and starts synchronization in the background.
+- `apps/mobile/hooks/use-todos.ts` is a small façade over the Zustand store; it is not a remote query cache for tasks.
+
+The API procedures used by synchronization are `todo.getAll`, `todo.create`, `todo.toggle`, and `todo.delete`. They are currently public and therefore not user-scoped. The local storage layer supports deletion and the API exposes it, but no current mobile screen presents a delete action.
 
 Apply the schema before starting the API:
 
@@ -20,13 +23,17 @@ Then start Expo with `EXPO_PUBLIC_SERVER_URL` pointing at the API, as shown in `
 
 ## Presentational or intentionally limited
 
-- Settings is a visual shell for the product preferences. Notifications, week-start preferences, and account controls do not have a persistence contract yet, so the screen does not claim to save them.
-- The task router is currently public and therefore not user-scoped. This is suitable for local development, but a production app should associate tasks with the authenticated user and protect the procedures before deployment.
-- Authentication primitives exist through Better Auth, but the default task experience does not require sign-in. A future authenticated product flow should add the session boundary and migrate existing task ownership deliberately.
+- Settings is a visual shell for Notifications, Week starts on, and Appearance; those preference rows do not persist a setting yet.
+- Settings legal links open the configured Terms of Service and Privacy Policy URLs in the system browser.
+- Reset onboarding is a working developer action that clears the local onboarding flag and returns to onboarding.
+- Authentication primitives exist through Better Auth, but the default task experience does not require sign-in. The current task procedures remain public and do not isolate users.
+- RevenueCat entitlement status can be read for signed-in users through the protected `subscription.status` procedure, but no task-creation limit or other premium feature is currently enforced by the API or mobile task flow.
 
 ## Verification checklist
 
-1. Create a task from Today or Tasks.
-2. Toggle it from either screen and confirm the count changes after the API refresh.
-3. Delete it from Tasks and confirm it disappears from Today and Week.
-4. Restart the API or reload the app and confirm the record remains in the database.
+1. Launch the app and create a task from Today or Search’s add-task action.
+2. Confirm the task appears immediately, including with the network unavailable.
+3. Complete it from Today or Search and confirm it leaves the open-task lists while Week counts it as complete.
+4. Restart the app and confirm the task remains in the device’s local SQLite store.
+5. Restore connectivity, allow synchronization to run, and confirm the server-backed copy is returned by `todo.getAll`.
+6. If testing server synchronization, remember that the current public todo procedures share records across clients and users.

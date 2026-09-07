@@ -48,9 +48,6 @@ local.db-*
 # Local agent state
 /.agents/
 
-# Local patch files
-/patches/
-
 # Logs
 logs
 .evlog/

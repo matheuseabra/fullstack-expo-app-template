@@ -4,7 +4,7 @@ Daymark Plus uses [RevenueCat](https://www.revenuecat.com/) (`react-native-purch
 
 ## How access is granted
 
-RevenueCat is the source of truth for store transactions; this repo's server persists the entitlement state so premium access can be enforced server-side.
+RevenueCat is the source of truth for store transactions; this repo's server persists the entitlement state and exposes it to signed-in clients. The current example does not enforce a task limit or gate another premium feature yet.
 
 ```mermaid
 sequenceDiagram
@@ -39,7 +39,7 @@ EXPO_PUBLIC_REVENUECAT_GOOGLE_API_KEY=...
 
 These are **public** keys (RevenueCat "App specific keys" under Project settings → API keys). They only identify the app; they cannot change subscription state. Never put the RevenueCat webhook secret or any private key in `EXPO_PUBLIC_*`.
 
-The SDK entitlement identifier `daymark_plus` (`apps/mobile/constants/purchases.ts`) must match an entitlement in the RevenueCat dashboard. Purchases are driven by the **current offering**; the paywall selects the monthly package (`$rc_monthly`) and shows the store price.
+The SDK entitlement identifier `daymark_plus` (`apps/mobile/constants/purchases.ts`) must match an entitlement in the RevenueCat dashboard. Purchases are driven by the **current offering**; the paywall prefers the monthly package and falls back to the first available package when no monthly package is configured.
 
 Because RevenueCat is a native module, Expo Go cannot run real purchases (it runs in Preview API Mode). Use a development build:
 
@@ -72,12 +72,12 @@ bun run dev:server
 
 ## Runtime flow
 
-1. `useRevenueCatBootstrap` configures the SDK once and calls `Purchases.logIn(user.id)` when a Better Auth session exists, so RevenueCat's `app_user_id` equals the local user id.
+1. `useRevenueCatBootstrap` links RevenueCat to `user.id` when a Better Auth session exists, so the webhook's `app_user_id` can equal the local user id. The paywall configures the native SDK before loading offerings for an anonymous user.
 2. The paywall (`usePaywallPurchases`) fetches `getOfferings()`, shows the monthly package price, and reads `customerInfo.entitlements.active` for the current status.
 3. The CTA calls `purchasePackage`. RevenueCat presents the platform sheet, verifies the purchase, and finishes the transaction; no manual transaction finishing is needed.
 4. Restore calls `restorePurchases()`.
 5. RevenueCat sends lifecycle webhooks (`INITIAL_PURCHASE`, `RENEWAL`, `EXPIRATION`, ...) to the server, which upserts the current state into the `subscription` table (idempotent by event id).
-6. `subscription.status` (protected oRPC procedure) returns the server-verified entitlement for the signed-in user. `usePlusEntitlement` merges it with the local SDK status.
+6. `subscription.status` (protected oRPC procedure) returns the persisted entitlement for the signed-in user. `usePlusEntitlement` accepts that server status and falls back to the local RevenueCat SDK state while webhook processing or authentication is incomplete.
 
 ## Webhook behavior
 
@@ -87,6 +87,7 @@ bun run dev:server
 - Idempotent: RevenueCat retries reuse the same `event.id`, which is stored as `last_event_id`; duplicates are ignored.
 - `EXPIRATION` revokes access immediately; `CANCELLATION` keeps access until the period ends (RevenueCat sends `EXPIRATION` after any grace period).
 - The row is linked to a local user when `app_user_id` matches a Better Auth user id (true after `Purchases.logIn`).
+- When a webhook contains multiple entitlement IDs, the current handler persists the first one only.
 
 ## Testing
 
@@ -106,6 +107,7 @@ curl -X POST http://localhost:3000/webhooks/revenuecat \
 - Register the webhook secret via environment configuration only (never `EXPO_PUBLIC_*`, never commit `.env`).
 - The webhook accepts both SANDBOX and PRODUCTION events. Before launch, filter `environment === "PRODUCTION"` if you do not want sandbox test purchases to grant access.
 - RevenueCat receipts are verified by RevenueCat; the server trusts the authenticated webhook as the entitlement boundary. Add optional HMAC verification if you want defense-in-depth beyond the bearer secret.
+- No task-creation limit or other premium capability is currently enforced after entitlement lookup; add that policy explicitly in the API and local write path before describing it as a paid boundary.
 - Store dashboard configuration (real product ids, matching bundle ids, test vs production API keys) is an operator task, not code.
 
 ## Out of scope / follow-ups

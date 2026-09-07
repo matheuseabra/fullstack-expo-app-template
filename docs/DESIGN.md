@@ -14,7 +14,7 @@ Daymark is a quiet, white-canvas task companion. Its visual language follows the
 
 ## Typography
 
-Use Inter as the primary sans family and a restrained serif only for optional editorial accents. The native app may use the system sans fallback until Inter is bundled as an app asset. Keep the family count to two and the weight count to three:
+Use an Inter-first sans stack on the web and a restrained serif only for optional editorial accents. The web currently falls back through the system stack because it does not bundle Inter; the native app uses the platform system sans. Keep the family count to two and the weight count to three:
 
 ```css
 --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
@@ -80,7 +80,7 @@ Semantic feedback colors should be muted and paired with text or icons; they are
 - **Splash:** use the light or dark Daymark app icon centered on the matching canvas background with no additional artwork or copy.
 - **Loading:** use neutral skeletons or inline progress text; avoid flashing layout changes.
 - **Errors:** state what happened and how to recover. Keep error styling restrained and accessible.
-- **Interaction feedback:** use subtle selection/light impacts for navigation and reversible actions, a success notification for completed or created tasks and onboarding completion, and a warning notification before destructive actions. Haptics should reinforce a state change, never accompany every tap.
+- **Interaction feedback:** use subtle selection/light impacts for navigation and reversible actions, success haptics for completed or created tasks and onboarding completion, and restrained inline errors for failed saves. Haptics should reinforce a state change, never accompany every tap.
 
 ## Marketing parity
 
@@ -93,7 +93,7 @@ The marketing site is the product’s visual preview, not a separate brand syste
 
 ## Implementation
 
-- Shared web primitives and tokens belong in `packages/ui`.
-- Web application styles belong in `apps/web/src/index.css` and route components.
-- Native styles use Uniwind utilities and `apps/mobile/global.css`.
-- When a component needs a new token, add it here first, then implement it in the relevant shared style layer.
+- The native product surfaces own their concrete tokens in `apps/mobile/constants/daymark.ts` and use explicit `StyleSheet` values; `apps/mobile/global.css` provides the utility/theme layer.
+- The web marketing surface owns its product-specific CSS variables and composition in `apps/web/src/index.css` and route components.
+- `packages/ui` is a web-oriented shared primitive and generic Tailwind token layer. It is imported by the web app, but it is not the source of truth for native screen measurements.
+- When a component needs a new product token, add it here first, then implement it in the relevant surface’s style layer.

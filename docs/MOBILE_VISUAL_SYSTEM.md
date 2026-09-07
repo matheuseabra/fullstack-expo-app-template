@@ -1,6 +1,6 @@
 # Mobile visual system
 
-Daymark’s mobile app should feel like the product shown in the marketing hero: a quiet, precise task companion that gives the next action a clear place. The generated reference board lives at [`desings/daymark-mobile-screen-grid.png`](../desings/daymark-mobile-screen-grid.png).
+Daymark’s mobile app should feel like the product shown in the marketing hero: a quiet, precise task companion that gives the next action a clear place. The repository does not currently track a separate generated reference board; the native implementation and `apps/web` marketing hero are the visual references.
 
 ## Look and feel
 
@@ -20,7 +20,7 @@ The canonical screen is a 9:16 portrait layout with a safe-area-aware top bar, a
 3. Primary action: a compact black FAB opens a small bottom-sheet task composer.
 4. Navigation: four equal destinations—Today, Week, Search, Settings—with the active destination black and the others muted.
 
-Onboarding uses the same canvas with centered copy. Its first screen places the Daymark icon and name above the headline. After the three steps, a separate soft-paywall view presents the benefit bullets, a high-intent primary CTA, and a quiet Daymark Plus note marked “Coming soon”; its top-right close control leads to Today.
+Onboarding uses the same canvas with centered copy. Its first screen places the Daymark icon and name above the headline. After the three steps, a separate soft-paywall view presents benefit bullets, the current store price when available, a purchase CTA, and a restore action; its top-right close control leads to Today.
 
 ## Shared measurements
 
@@ -37,6 +37,6 @@ Onboarding uses the same canvas with centered copy. Its first screen places the 
 
 ## Native implementation
 
-Use `apps/mobile/constants/daymark.ts` as the source of truth for native colors, spacing, radii, and type sizes. Prefer explicit `StyleSheet` values for the product surfaces so the Simulator rendering stays aligned with the web hero. Uniwind remains available for utility composition, but product-critical layout should not depend on theme defaults from a component library.
+Use `apps/mobile/constants/daymark.ts` as the source of truth for native colors, spacing, radii, and type sizes. Prefer explicit `StyleSheet` values for the product surfaces so the Simulator rendering stays aligned with the web hero. The native app currently uses the system sans family rather than bundling Inter. Uniwind and HeroUI Native remain available for utility/auth surfaces, but product-critical layout should not depend on theme defaults from a component library.
 
 The product follows the operating-system light/dark appearance using the same neutral hierarchy. Do not introduce gradients, saturated accents, decorative illustrations, or unrelated card treatments without updating this document and the marketing hero together.
