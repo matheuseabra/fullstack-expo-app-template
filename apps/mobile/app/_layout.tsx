@@ -12,6 +12,7 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { AppState } from "react-native";
 import { AppThemeProvider } from "@/contexts/app-theme-context";
 import { useDaymarkColors } from "@/hooks/use-daymark-theme";
+import { useRevenueCatBootstrap } from "@/hooks/use-revenuecat-bootstrap";
 import { registerBackgroundSync } from "@/lib/background-sync";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useTodoStore } from "@/stores/todo-store";
@@ -62,6 +63,11 @@ function OnboardingGate() {
   return null;
 }
 
+function RevenueCatBootstrap() {
+  useRevenueCatBootstrap();
+  return null;
+}
+
 function OfflineSyncBootstrap() {
   const hydrate = useTodoStore((state) => state.hydrate);
   const sync = useTodoStore((state) => state.sync);
@@ -88,6 +94,7 @@ export default function Layout() {
   return (
     <QueryClientProvider client={queryClient}>
       <OnboardingGate />
+      <RevenueCatBootstrap />
       <OfflineSyncBootstrap />
       <GestureHandlerRootView style={{ flex: 1 }}>
         <KeyboardProvider>

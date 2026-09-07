@@ -1,12 +1,13 @@
 import { CheckCircleIcon, XIcon } from "phosphor-react-native";
 import { useRouter } from "expo-router";
-import { useColorScheme, Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useColorScheme, Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Container } from "@/components/container";
 import { DAYMARK_RADII, DAYMARK_SPACING, DAYMARK_TYPE, type DaymarkColors } from "@/constants/daymark";
 import { useDaymarkColors } from "@/hooks/use-daymark-theme";
+import { type PaywallPurchaseState, usePaywallPurchases } from "@/hooks/use-paywall-purchases";
 import { useOnboardingStore } from "@/stores/onboarding-store";
-import { hapticLight, hapticMedium } from "@/utils/haptics";
+import { hapticLight } from "@/utils/haptics";
 
 const icon = require("../assets/images/icon.png");
 const darkIcon = require("../assets/images/icon-dark.png");
@@ -25,11 +26,7 @@ export default function PaywallScreen() {
     hapticLight();
     void complete().then(() => router.replace("/(tabs)"));
   };
-
-  const handlePurchase = () => {
-    hapticMedium();
-    Alert.alert("Daymark Plus", "The in-app purchase flow is mocked for now. You can keep using the free plan.", [{ text: "Continue to Daymark", onPress: close }]);
-  };
+  const purchase = usePaywallPurchases(close);
 
   return (
     <Container isScrollable={false} style={styles.container}>
@@ -53,19 +50,60 @@ export default function PaywallScreen() {
               </View>
             ))}
           </View>
-          <View style={styles.offerCard}>
-            <View style={styles.offerHeader}>
-              <Text style={styles.offerLabel}>More clarity, when you need it.</Text>
-              <Text style={styles.offerBadge}>Coming soon</Text>
-            </View>
-            <Text style={styles.offerBody}>Start with the essentials. Premium planning tools will be there when you’re ready.</Text>
-          </View>
-          <Pressable accessibilityRole="button" accessibilityLabel="Start your free trial of Daymark Plus" onPress={handlePurchase} style={styles.ctaButton}>
-            <Text style={styles.ctaText}>Start my free trial</Text>
-          </Pressable>
+          <PaywallOfferCard purchase={purchase} styles={styles} />
+          <PaywallPurchaseActions purchase={purchase} styles={styles} />
         </View>
       </View>
     </Container>
+  );
+}
+
+type PaywallStyles = ReturnType<typeof makeStyles>;
+
+function storeName() {
+  return Platform.OS === "ios" ? "App Store" : Platform.OS === "android" ? "Google Play" : "store";
+}
+
+function PaywallOfferCard({ purchase, styles }: { purchase: PaywallPurchaseState; styles: PaywallStyles }) {
+  const price = purchase.subscription?.displayPrice ?? (purchase.connected ? "Unavailable" : "Loading…");
+  const store = storeName();
+  const details = purchase.subscription
+    ? `${purchase.subscription.displayPrice} through the ${store}. Manage or cancel anytime in your store account settings.`
+    : purchase.connected
+      ? `Connect to the ${store} to load the current plan and price.`
+      : "Connecting to the store to load the current plan and price…";
+
+  return (
+    <View style={styles.offerCard}>
+      <View style={styles.offerHeader}>
+        <Text style={styles.offerLabel}>More clarity, when you need it.</Text>
+        <Text style={styles.offerBadge}>{price}</Text>
+      </View>
+      <Text style={styles.offerBody}>{details}</Text>
+    </View>
+  );
+}
+
+function PaywallPurchaseActions({ purchase, styles }: { purchase: PaywallPurchaseState; styles: PaywallStyles }) {
+  const disabled = purchase.isPurchasing || purchase.isRestoring;
+  const buttonText = purchase.hasActiveSubscription
+    ? "Continue to Daymark"
+    : purchase.isPurchasing
+      ? "Waiting for the store…"
+      : purchase.hasFreeTrial
+        ? "Start my free trial"
+        : "Start Daymark Plus";
+
+  return (
+    <>
+      <Pressable accessibilityRole="button" accessibilityLabel={purchase.hasActiveSubscription ? "Continue to Daymark" : "Purchase Daymark Plus"} disabled={disabled} onPress={() => void purchase.handlePurchase()} style={[styles.ctaButton, disabled && styles.ctaButtonDisabled]}>
+        <Text style={styles.ctaText}>{buttonText}</Text>
+      </Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel="Restore Daymark Plus purchase" disabled={disabled} onPress={() => void purchase.handleRestore()} style={styles.restoreButton}>
+        <Text style={styles.restoreText}>{purchase.isRestoring ? "Restoring…" : "Restore purchase"}</Text>
+      </Pressable>
+      {purchase.purchaseError ? <Text accessibilityRole="alert" style={styles.errorText}>{purchase.purchaseError}</Text> : null}
+    </>
   );
 }
 
@@ -90,6 +128,10 @@ function makeStyles(colors: DaymarkColors) {
     offerBadge: { ...DAYMARK_TYPE.small, color: colors.textMuted },
     offerBody: { ...DAYMARK_TYPE.small, color: colors.textMuted, marginTop: DAYMARK_SPACING.xs },
     ctaButton: { alignItems: "center", alignSelf: "stretch", backgroundColor: colors.black, borderRadius: DAYMARK_RADII.round, height: 56, justifyContent: "center", marginTop: DAYMARK_SPACING.md },
+    ctaButtonDisabled: { opacity: 0.55 },
     ctaText: { color: colors.white, fontFamily: DAYMARK_TYPE.body.fontFamily, fontSize: 16, fontWeight: "600", lineHeight: 22 },
+    restoreButton: { alignItems: "center", height: 40, justifyContent: "center", marginTop: DAYMARK_SPACING.xs },
+    restoreText: { ...DAYMARK_TYPE.small, color: colors.textMuted },
+    errorText: { ...DAYMARK_TYPE.small, color: colors.danger, marginTop: DAYMARK_SPACING.sm, textAlign: "center" },
   });
 }

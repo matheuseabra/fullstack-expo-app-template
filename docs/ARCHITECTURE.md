@@ -59,9 +59,9 @@ sequenceDiagram
 
 Each runtime validates only its own environment surface:
 
-- Server: `DATABASE_URL`, `DATABASE_AUTH_TOKEN`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, and `CORS_ORIGIN`.
+- Server: `DATABASE_URL`, `DATABASE_AUTH_TOKEN`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `CORS_ORIGIN`, and `REVENUECAT_WEBHOOK_SECRET` (optional locally).
 - Web: `VITE_SERVER_URL`.
-- Native: `EXPO_PUBLIC_SERVER_URL`.
+- Native: `EXPO_PUBLIC_SERVER_URL`, `EXPO_PUBLIC_REVENUECAT_APPLE_API_KEY`, and `EXPO_PUBLIC_REVENUECAT_GOOGLE_API_KEY`.
 
 The server loads `apps/server/.env` through `dotenv`. Vite loads `apps/web/.env`, and Expo loads `apps/mobile/.env`. Public client variables must never contain credentials.
 

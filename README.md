@@ -114,6 +114,7 @@ Docker Compose reads `apps/server/.env`. Use a hosted database or provide a data
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for dependency and request-flow diagrams, [`docs/DESIGN.md`](docs/DESIGN.md) for the visual system, and [`AGENTS.md`](AGENTS.md) for repository operating instructions.
 See [`docs/MOBILE_FUNCTIONALITY.md`](docs/MOBILE_FUNCTIONALITY.md) for the mobile mock/functionality audit and persistence verification checklist.
+See [`docs/IAP.md`](docs/IAP.md) for Expo development-build, store setup, testing, and production entitlement guidance.
 
 ## Quality checks
 
