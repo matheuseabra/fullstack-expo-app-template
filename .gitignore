@@ -47,9 +47,6 @@ local.db-*
 
 # Local agent state
 .agents/**
-!.agents/skills/
-!.agents/skills/asc/
-!.agents/skills/asc/SKILL.md
 
 # Logs
 logs
