@@ -6,7 +6,8 @@ This repository is a Bun/Turborepo full-stack template. Keep changes small, loca
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for runtime boundaries and request flows.
 - [`docs/DESIGN.md`](docs/DESIGN.md) for visual decisions and UI vocabulary.
-- The relevant skill under [`.agent/skills/`](.agent/skills/) before changing a stack area.
+- The relevant skill under [`.agents/skills/`](.agents/skills/) before changing a stack area.
+- Use [asc](.agents/skills/asc/SKILL.md) for this app's App Store Connect work, using `rorkai/App-Store-Connect-CLI`.
 
 ## Stack map
 
