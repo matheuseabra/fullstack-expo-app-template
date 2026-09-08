@@ -10,7 +10,7 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
-        title: "Daymark — Make room for the next right thing",
+        title: "Daymark: Make room for the next right thing",
       },
       {
         name: "description",
@@ -21,15 +21,8 @@ export const Route = createRootRoute({
     links: [
       {
         rel: "icon",
-        href: "/daymark-icon.png",
-        type: "image/png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        rel: "icon",
-        href: "/daymark-icon-dark.png",
-        type: "image/png",
-        media: "(prefers-color-scheme: dark)",
+        href: "/daymark-favicon-black.svg?v=1",
+        type: "image/svg+xml",
       },
     ],
   }),

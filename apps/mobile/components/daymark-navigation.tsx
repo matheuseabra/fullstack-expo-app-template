@@ -98,10 +98,10 @@ export function DaymarkTabBar(props: TabBarProps) {
 function makeStyles(colors: ReturnType<typeof useDaymarkColors>) {
   return StyleSheet.create({
   header: { alignItems: "center", backgroundColor: colors.canvas, flexDirection: "row", justifyContent: "space-between", paddingBottom: DAYMARK_SPACING.sm, paddingHorizontal: DAYMARK_SPACING.screen },
-  floatingButton: { alignItems: "center", backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.round, elevation: 2, height: 44, justifyContent: "center", shadowColor: colors.black, shadowOffset: { height: 4, width: 0 }, shadowOpacity: 0.07, shadowRadius: 12, width: 44 },
+  floatingButton: { alignItems: "center", backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.round, elevation: 1, height: 44, justifyContent: "center", shadowColor: colors.black, shadowOffset: { height: 2, width: 0 }, shadowOpacity: 0.05, shadowRadius: 8, width: 44 },
   bottomNav: { backgroundColor: colors.canvas, paddingHorizontal: DAYMARK_SPACING.md, paddingTop: DAYMARK_SPACING.sm, position: "relative" },
   tabBarPill: { alignItems: "center", alignSelf: "stretch", backgroundColor: "transparent", flexDirection: "row", height: 52, width: "100%" },
   navItem: { alignItems: "center", flex: 1, height: 48, justifyContent: "center", minWidth: 48 },
-  fab: { alignItems: "center", backgroundColor: colors.black, borderRadius: DAYMARK_RADII.round, elevation: 4, height: 52, justifyContent: "center", position: "absolute", right: DAYMARK_SPACING.md, shadowColor: colors.black, shadowOffset: { height: 4, width: 0 }, shadowOpacity: 0.14, shadowRadius: 8, top: -54, width: 52 },
+  fab: { alignItems: "center", backgroundColor: colors.black, borderRadius: DAYMARK_RADII.round, elevation: 3, height: 52, justifyContent: "center", position: "absolute", right: DAYMARK_SPACING.md, shadowColor: colors.black, shadowOffset: { height: 3, width: 0 }, shadowOpacity: 0.1, shadowRadius: 6, top: -54, width: 52 },
   });
 }

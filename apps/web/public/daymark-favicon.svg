@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <filter id="force-black" color-interpolation-filters="sRGB">
+      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" rx="192" fill="#fff"/>
+  <image href="/daymark-icon.png" width="1024" height="1024" preserveAspectRatio="xMidYMid meet" filter="url(#force-black)"/>
+</svg>

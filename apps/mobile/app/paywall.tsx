@@ -113,7 +113,7 @@ function makeStyles(colors: DaymarkColors) {
     content: { flex: 1, paddingHorizontal: DAYMARK_SPACING.screen },
     header: { alignItems: "center", flexDirection: "row", justifyContent: "space-between" },
     headerSpacer: { height: 44, width: 44 },
-    closeButton: { alignItems: "center", backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.round, elevation: 2, height: 44, justifyContent: "center", shadowColor: colors.black, shadowOffset: { height: 4, width: 0 }, shadowOpacity: 0.07, shadowRadius: 12, width: 44 },
+    closeButton: { alignItems: "center", backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.round, elevation: 1, height: 44, justifyContent: "center", shadowColor: colors.black, shadowOffset: { height: 2, width: 0 }, shadowOpacity: 0.04, shadowRadius: 8, width: 44 },
     copy: { alignItems: "center", flex: 1, justifyContent: "center", maxWidth: 330, width: "100%" },
     icon: { height: 64, marginBottom: DAYMARK_SPACING.md, width: 64 },
     eyebrow: { ...DAYMARK_TYPE.label, color: colors.textMuted },

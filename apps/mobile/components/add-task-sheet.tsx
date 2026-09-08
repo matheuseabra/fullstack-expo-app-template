@@ -78,7 +78,7 @@ function makeStyles(colors: DaymarkColors) {
   return StyleSheet.create({
     modal: { flex: 1, justifyContent: "flex-end" },
     backdrop: { bottom: 0, left: 0, position: "absolute", right: 0, top: 0 },
-    sheet: { backgroundColor: colors.surface, borderTopLeftRadius: DAYMARK_RADII.surface, borderTopRightRadius: DAYMARK_RADII.surface, elevation: 8, paddingHorizontal: DAYMARK_SPACING.screen, paddingTop: DAYMARK_SPACING.sm, shadowColor: colors.black, shadowOffset: { height: -4, width: 0 }, shadowOpacity: 0.1, shadowRadius: 18 },
+    sheet: { backgroundColor: colors.surface, borderTopLeftRadius: DAYMARK_RADII.surface, borderTopRightRadius: DAYMARK_RADII.surface, elevation: 6, paddingHorizontal: DAYMARK_SPACING.screen, paddingTop: DAYMARK_SPACING.sm, shadowColor: colors.black, shadowOffset: { height: -3, width: 0 }, shadowOpacity: 0.08, shadowRadius: 14 },
     grabber: { alignSelf: "center", backgroundColor: colors.border, borderRadius: DAYMARK_RADII.round, height: 4, marginBottom: DAYMARK_SPACING.lg, width: 36 },
     header: { alignItems: "center", flexDirection: "row", justifyContent: "space-between", marginBottom: DAYMARK_SPACING.md },
     title: { ...DAYMARK_TYPE.sectionTitle, color: colors.text },

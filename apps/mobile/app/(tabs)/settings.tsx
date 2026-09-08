@@ -88,7 +88,7 @@ function makeStyles(colors: DaymarkColors) {
   pageTitle: { ...DAYMARK_TYPE.pageTitle, color: colors.text },
   sectionLabel: { ...DAYMARK_TYPE.small, color: colors.textMuted, fontWeight: "400", letterSpacing: 0, marginBottom: DAYMARK_SPACING.sm },
   sectionLabelSpaced: { marginTop: DAYMARK_SPACING.xl },
-  list: { backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.surface, elevation: 2, paddingHorizontal: DAYMARK_SPACING.lg, shadowColor: colors.black, shadowOffset: { height: 3, width: 0 }, shadowOpacity: 0.06, shadowRadius: 12 },
+    list: { backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.surface, elevation: 1, paddingHorizontal: DAYMARK_SPACING.lg, shadowColor: colors.black, shadowOffset: { height: 2, width: 0 }, shadowOpacity: 0.04, shadowRadius: 8 },
   row: { alignItems: "center", borderBottomColor: colors.border, borderBottomWidth: 1, flexDirection: "row", gap: DAYMARK_SPACING.md, minHeight: 56 },
   rowLast: { borderBottomWidth: 0 },
   rowCopy: { flex: 1 },

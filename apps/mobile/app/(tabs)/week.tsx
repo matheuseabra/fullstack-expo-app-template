@@ -106,7 +106,7 @@ function makeStyles(colors: DaymarkColors) {
     subtitle: { ...DAYMARK_TYPE.small, color: colors.textMuted, marginTop: DAYMARK_SPACING.xs },
     modeToggle: { alignSelf: "flex-start", backgroundColor: colors.surfaceMuted, borderRadius: DAYMARK_RADII.round, flexDirection: "row", marginBottom: DAYMARK_SPACING.lg, padding: 3 },
     modeButton: { alignItems: "center", borderRadius: DAYMARK_RADII.round, flexDirection: "row", gap: DAYMARK_SPACING.xs, minHeight: 34, paddingHorizontal: DAYMARK_SPACING.md },
-    modeButtonActive: { backgroundColor: colors.surface, elevation: 1, shadowColor: colors.black, shadowOpacity: 0.06, shadowRadius: 4 },
+    modeButtonActive: { backgroundColor: colors.surface, elevation: 1, shadowColor: colors.black, shadowOpacity: 0.04, shadowRadius: 3 },
     modeLabel: { ...DAYMARK_TYPE.small, color: colors.textMuted },
     modeLabelActive: { color: colors.text, fontWeight: "600" },
     calendarCard: { backgroundColor: colors.surfaceMuted, borderRadius: DAYMARK_RADII.surface, padding: DAYMARK_SPACING.lg },

@@ -1,8 +1,8 @@
 export const DAYMARK_COLORS = {
-  canvas: "#FFFFFF",
+  canvas: "#F4F4F5",
   surface: "#FFFFFF",
-  surfaceMuted: "#EEEEEF",
-  border: "#E8E8EA",
+  surfaceMuted: "#E7E7E9",
+  border: "#DCDCE0",
   borderStrong: "#111111",
   text: "#0A0A0A",
   textMuted: "#8A8A8F",

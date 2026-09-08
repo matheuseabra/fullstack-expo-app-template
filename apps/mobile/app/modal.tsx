@@ -57,7 +57,7 @@ function makeStyles(colors: DaymarkColors) {
   headerAction: { ...DAYMARK_TYPE.body, color: colors.text },
   headerTitle: { ...DAYMARK_TYPE.label, color: colors.text },
   sectionLabel: { ...DAYMARK_TYPE.small, color: colors.textMuted, fontWeight: "600", marginBottom: DAYMARK_SPACING.sm, marginTop: DAYMARK_SPACING.xl, textTransform: "uppercase" },
-  group: { backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.surface, elevation: 2, paddingHorizontal: DAYMARK_SPACING.lg, shadowColor: colors.black, shadowOffset: { height: 3, width: 0 }, shadowOpacity: 0.06, shadowRadius: 12 },
+    group: { backgroundColor: colors.surface, borderRadius: DAYMARK_RADII.surface, elevation: 1, paddingHorizontal: DAYMARK_SPACING.lg, shadowColor: colors.black, shadowOffset: { height: 2, width: 0 }, shadowOpacity: 0.04, shadowRadius: 8 },
   row: { alignItems: "center", borderBottomColor: colors.border, borderBottomWidth: 1, flexDirection: "row", gap: DAYMARK_SPACING.sm, minHeight: 52 },
   rowLast: { borderBottomWidth: 0 },
   rowLabel: { ...DAYMARK_TYPE.body, color: colors.text, flex: 1 },
